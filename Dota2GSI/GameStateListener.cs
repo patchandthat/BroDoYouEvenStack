@@ -14,7 +14,6 @@ namespace Dota2GSI
         private readonly HttpListener _listener;
 
         private GameState _currentGameState;
-        private int _port;
 
         public GameState CurrentGameState
         {
@@ -32,16 +31,12 @@ namespace Dota2GSI
         /// <summary>
         /// Gets the port that is being listened
         /// </summary>
-        public int Port
-        {
-            get { return _port; }
-            set { _port = value; }
-        }
+        public int Port { get; set; }
 
         /// <summary>
         /// Returns whether or not the listener is running
         /// </summary>
-        public bool Running { get { return !_cancellation?.Token.IsCancellationRequested ?? false; } }
+        public bool Running => !_cancellation?.Token.IsCancellationRequested ?? false;
 
         /// <summary>
         ///  Event for handing a newly received game state
@@ -94,7 +89,6 @@ namespace Dota2GSI
         {
             if (_cancellation == null)
             {
-                //Todo Use lazy<T> to guarantee thread safe init
                 _cancellation = new CancellationTokenSource();
                 var token = _cancellation.Token;
 
@@ -128,6 +122,7 @@ namespace Dota2GSI
 
                 CurrentGameState = new GameState(json);
             }
+
             _listener.Stop();
         }
 

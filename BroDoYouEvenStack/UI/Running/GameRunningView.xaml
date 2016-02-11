@@ -7,9 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <!--
-            When idle in game, just show some player steam info
-            When in game, show basic hero data, game time, maybe a progress bar for each reminder
+        <!--       
+            Todo
         
             Controls for:
                 Remind for runes {y/n}
@@ -20,7 +19,22 @@
                     Dialog for custom sound file, or default horn
         
                 Stop reminding after {time}
+                Mute sounds while I'm dead {y/n}
+              
+            While in game, also show a countdown progressbar for each timer, and a mute icon for each
+            Outside of game, just show some general player info
+        
+            Remember User's choices, write to %appdata%\DBYES\config.json
         -->
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Message" /> 
+        
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <ContentControl x:Name="Config" Grid.Row="1"></ContentControl>
+        <ContentControl x:Name="Timers" Grid.Row="2"></ContentControl>
     </Grid>
 </UserControl>

@@ -7,8 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                Bro do you even run the game?
-            </TextBlock>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="1">
+            <Image Source="/BroDoYouEvenStack;component/Resources/Dota2.png" Grid.Row="1"></Image>
+            <TextBlock HorizontalAlignment="Center">Launch the game...</TextBlock>
+        </StackPanel>
+        
     </Grid>
 </UserControl>

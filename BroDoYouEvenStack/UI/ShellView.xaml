@@ -5,8 +5,16 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BroDoYouEvenStack.UI"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             mc:Ignorable="d" d:DesignWidth="600" Height="300">
+             mc:Ignorable="d" d:DesignWidth="600" Height="300"
+             GlowBrush="{DynamicResource AccentColorBrush}"
+             BorderThickness="1"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+            >
     <Grid>
-        <controls:TransitioningContentControl x:Name="Content"></controls:TransitioningContentControl>
+        <controls:TransitioningContentControl x:Name="Content" Margin="5"></controls:TransitioningContentControl>
     </Grid>
 </controls:MetroWindow>

@@ -158,6 +158,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Resources\Icons.xml" />
+    <Resource Include="Resources\Dota2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="Resources\horn.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -33,6 +33,8 @@ namespace BroDoYouEvenStack.UI.Running
 
             if (state.Map.GameState == DOTA_GameState.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS)
             {
+                //Don't alert if the player is dead...
+
                 var mins = state.Map.ClockTime / 60;
                 var secs = state.Map.ClockTime % 60;
                 Message = $"Game time is {mins}:{secs.ToString("D2")}";
