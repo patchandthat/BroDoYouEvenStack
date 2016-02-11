@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="BroDoYouEvenStack.UI.Running.ConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BroDoYouEvenStack.UI.Running"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="600">
+    <StackPanel>
+        <!--       
+            Todo
+        
+            Remember User's choices, write to %appdata%\DBYES\config.json
+            If the file exists, use these settings on startup, defaults if not
+        -->
+        
+        <!-- Rune timers -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal"  Margin="16,0,0,0">
+                <Label VerticalAlignment="Bottom" Margin="16,0,0,0">Remind me to get runes</Label>
+                <!--<ToggleButton Content="R" Margin="4,4,4,4" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="MaterialDesignActionToggleButton"/>-->
+                <ToggleButton x:Name="RuneToggle" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Bottom" Margin="27,0,0,0" />
+                <!-- todo Sound file override --> 
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="16,0,0,0">
+                <Label Margin="16,0,0,0" VerticalAlignment="Bottom">Give me {0} seconds warning</Label>
+                <Slider x:Name="RuneSecondsWarning" VerticalAlignment="Center" Minimum="0" Maximum="60" Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                    Value="25"
+                    Width="200" 
+                    Margin="8,0,0,0"/>
+                <Label Margin="16,0,0,0" VerticalAlignment="Bottom">Stop warning me after {0} minutes</Label>
+                <Slider x:Name="RuneStopWarningAfterMinutes" VerticalAlignment="Center" Minimum="0" Maximum="60" Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                    Value="20"
+                    Width="200" 
+                    Margin="8,0,0,0"/>
+            </StackPanel>
+        </Grid>
+        
+        <!-- Creep timers -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal"  Margin="16,24,0,0">
+                <Label VerticalAlignment="Bottom" Margin="16,0,0,0">Remind me to stack creeps</Label>
+                <!--<ToggleButton Content="R" Margin="4,4,4,4" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="MaterialDesignActionToggleButton"/>-->
+                <ToggleButton x:Name="CreepToggle" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Bottom" Margin="8,0,0,0" />
+                <!-- todo Sound file override -->
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="16,0,0,0">
+                <Label Margin="16,0,0,0" VerticalAlignment="Bottom">Give me {0} seconds warning</Label>
+                <Slider x:Name="CreepSecondsWarning" VerticalAlignment="Center" Minimum="0" Maximum="60" Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                    Value="25"
+                    Width="200" 
+                    Margin="8,0,0,0"/>
+                <Label Margin="16,0,0,0" VerticalAlignment="Bottom">Stop warning me after {0} minutes</Label>
+                <Slider x:Name="CreepStopWarningAfterMinutes" VerticalAlignment="Center" Minimum="0" Maximum="60" Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                    Value="20"
+                    Width="200" 
+                    Margin="8,0,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Misc 
+            Mute sounds while I'm dead {y/n}
+        -->
+        <Grid>
+
+        </Grid>
+    </StackPanel>
+</UserControl>

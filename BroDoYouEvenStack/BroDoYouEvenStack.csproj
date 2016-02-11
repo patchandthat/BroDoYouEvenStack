@@ -62,6 +62,10 @@
       <HintPath>..\packages\MaterialDesignThemes.1.4.1.485\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -90,16 +94,26 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Messages\ConfigChanged.cs" />
     <Compile Include="Messages\GameClosed.cs" />
     <Compile Include="Messages\GameOpened.cs" />
     <Compile Include="UI\Idle\GameNotRunningView.xaml.cs">
       <DependentUpon>GameNotRunningView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Idle\GameNotRunningViewModel.cs" />
+    <Compile Include="UI\Running\Config.cs" />
+    <Compile Include="UI\Running\ConfigView.xaml.cs">
+      <DependentUpon>ConfigView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Running\ConfigViewModel.cs" />
     <Compile Include="UI\Running\GameRunningView.xaml.cs">
       <DependentUpon>GameRunningView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Running\GameRunningViewModel.cs" />
+    <Compile Include="UI\Running\TimersView.xaml.cs">
+      <DependentUpon>TimersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Running\TimersViewModel.cs" />
     <Compile Include="UI\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -142,7 +156,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\Running\ConfigView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\Running\GameRunningView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Running\TimersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

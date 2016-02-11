@@ -50,8 +50,8 @@ namespace BroDoYouEvenStack
             var settings = new Dictionary<string, object>
             {
                 {"SizeToContent", SizeToContent.Manual},
-                {"Width", 600},
-                {"Height", 300},
+                {"Width", 900},
+                {"Height", 500},
             };
 
             DisplayRootViewFor<ShellViewModel>(settings);

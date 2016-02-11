@@ -92,7 +92,11 @@ namespace Dota2GSI
                 _cancellation = new CancellationTokenSource();
                 var token = _cancellation.Token;
 
-                Task.Run(() => Run(token), token);
+                Task.Factory.StartNew(
+                    () => Run(token), 
+                    token, 
+                    TaskCreationOptions.LongRunning, 
+                    TaskScheduler.Default);
 
                 return true;
             }

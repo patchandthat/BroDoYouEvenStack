@@ -1,0 +1,12 @@
+﻿<UserControl x:Class="BroDoYouEvenStack.UI.Running.TimersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BroDoYouEvenStack.UI.Running"
+             mc:Ignorable="d" 
+             d:DesignHeight="120" d:DesignWidth="600">
+    <Grid>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">TIMERS</TextBlock>
+    </Grid>
+</UserControl>
