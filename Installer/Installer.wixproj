@@ -21,7 +21,24 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Fragments\Components\AppFiles.wxs" />
+    <Compile Include="Fragments\Components\DotaConfigFiles.wxs" />
+    <Compile Include="Fragments\CustomActions.wxs" />
+    <Compile Include="Fragments\Directories.wxs" />
+    <Compile Include="Fragments\Features.wxs" />
+    <Compile Include="Fragments\InstallSequence.wxs" />
+    <Compile Include="Fragments\Properties.wxs" />
     <Compile Include="Product.wxs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Fragments\Components\" />
+    <Folder Include="Includes" />
+    <Folder Include="Fragments" />
+    <Folder Include="XSL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Includes\SourceFilePaths.wxi" />
+    <Content Include="XSL\Transform.xslt" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <!--

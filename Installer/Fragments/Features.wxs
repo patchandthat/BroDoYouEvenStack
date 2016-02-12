@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+        <Feature Id="ProductFeature" Title="Bro do you even stack" Level="1">
+            <ComponentGroupRef Id="AppFiles"/>
+            <ComponentGroupRef Id="DotaConfigFiles"/> <!-- Todo: later do a rememberproperty, only install this file if not present. -->
+        </Feature>
+	</Fragment>
+</Wix>

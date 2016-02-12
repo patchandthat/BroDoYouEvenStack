@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder">
+                <Directory Id="BroDoYouEvenStackFolder" Name="BroDoYouEvenStack">
+                    <Directory Id="BroDoYouEvenStackResourcesFolder" Name="Resources" />
+                </Directory>
+            </Directory>
+
+            <Directory Id="DotaConfigDir">
+                <!-- Todo Pass property from bootstrapper -->
+                <Directory Id="DotaGsiDir" Name="gamestate_integration"></Directory>
+            </Directory>
+
+            <!--<Directory Id="ProgramMenuFolder">
+                <Directory Id="dirBroDoYouEvenStackStartMenuFolder" Name="Bro do you even stack"></Directory>
+            </Directory>-->
+        </Directory>
+	</Fragment>
+</Wix>

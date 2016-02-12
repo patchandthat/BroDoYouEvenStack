@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    
+    <?include "..\..\Includes\SourceFilePaths.wxi"?>
+    
+	<Fragment>
+        <DirectoryRef Id="DotaGsiDir">
+            <Component Id="gsi.ConfigFile" Guid="65991541-B54A-4615-8BF5-51AEC97D21AE">
+                <File Id="file.gsi.ConfigFile" KeyPath="yes" Source="$(var.ResourcesSource)\gamestate_integration_stack.cfg" />
+            </Component>
+        </DirectoryRef>
+	</Fragment>
+    <Fragment>
+        <ComponentGroup Id="DotaConfigFiles">
+            <ComponentRef Id="gsi.ConfigFile"/>
+        </ComponentGroup>
+    </Fragment>
+</Wix>
