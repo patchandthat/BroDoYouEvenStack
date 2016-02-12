@@ -1,4 +1,6 @@
-﻿namespace Dota2GSI.Nodes
+﻿using Dota2GSI.Nodes;
+
+namespace Dota2GSI.Nodes
 {
     public enum DOTA_GameState
     {
@@ -11,7 +13,8 @@
         DOTA_GAMERULES_STATE_POST_GAME,
         DOTA_GAMERULES_STATE_PRE_GAME,
         DOTA_GAMERULES_STATE_STRATEGY_TIME,
-        DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD
+        DOTA_GAMERULES_STATE_WAIT_FOR_PLAYERS_TO_LOAD,
+        DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP
     }
 
     public enum PlayerTeam

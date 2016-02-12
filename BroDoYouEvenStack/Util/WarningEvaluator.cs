@@ -7,14 +7,12 @@ namespace BroDoYouEvenStack.Util
         private readonly int _warningAt;
 
         private const int RUNE_SPAWN_TIME = 120;
-        private const int NEUTRAL_SPAWN_TIME = 120;
+        private const int NEUTRAL_SPAWN_TIME = 60;
 
         private readonly int spawnTime;
 
-        public WarningEvaluator(TimeSpan warningAt, WarningType type)
+        public WarningEvaluator(TimeSpan warningBefore, WarningType type)
         {
-            _warningAt = (int) warningAt.TotalSeconds;
-
             switch (type)
             {
                 case WarningType.RuneSpawn:
@@ -26,6 +24,8 @@ namespace BroDoYouEvenStack.Util
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
+
+            _warningAt = spawnTime - (int)warningBefore.TotalSeconds;
         }
 
         public bool IsTimeForWarning(int gametime)
@@ -33,6 +33,17 @@ namespace BroDoYouEvenStack.Util
             int time = gametime % spawnTime;
 
             return time == _warningAt;
+        }
+
+        public int ProgressPercent(int clocktime)
+        {
+            int offset = spawnTime - _warningAt;
+            int time = clocktime % spawnTime;
+
+            double percent = (time + offset) / (double)spawnTime;
+
+            var progress = Math.Round(100 * percent, 0, MidpointRounding.AwayFromZero);
+            return (int)progress % 100;
         }
     }
 }

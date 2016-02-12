@@ -95,25 +95,39 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Messages\ConfigChanged.cs" />
+    <Compile Include="Messages\ErrorMessage.cs" />
     <Compile Include="Messages\GameClosed.cs" />
     <Compile Include="Messages\GameOpened.cs" />
     <Compile Include="UI\Idle\GameNotRunningView.xaml.cs">
       <DependentUpon>GameNotRunningView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\Idle\GameNotRunningViewModel.cs" />
-    <Compile Include="UI\Running\Config.cs" />
-    <Compile Include="UI\Running\ConfigView.xaml.cs">
+    <Compile Include="UI\Running\Configuration\Config.cs" />
+    <Compile Include="UI\Running\Configuration\ConfigView.xaml.cs">
       <DependentUpon>ConfigView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Running\ConfigViewModel.cs" />
-    <Compile Include="UI\Running\GameRunningView.xaml.cs">
+    <Compile Include="UI\Running\Configuration\ConfigViewModel.cs" />
+    <Compile Include="UI\Running\Displays\GameRunningView.xaml.cs">
       <DependentUpon>GameRunningView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Running\GameRunningViewModel.cs" />
-    <Compile Include="UI\Running\TimersView.xaml.cs">
+    <Compile Include="UI\Running\Displays\GameRunningViewModel.cs" />
+    <Compile Include="UI\Running\Displays\IdleView.xaml.cs">
+      <DependentUpon>IdleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Running\Displays\IdleViewModel.cs" />
+    <Compile Include="UI\Running\Displays\LoadingView.xaml.cs">
+      <DependentUpon>LoadingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Running\Displays\LoadingViewModel.cs" />
+    <Compile Include="UI\Running\Configuration\MutableConfig.cs" />
+    <Compile Include="UI\Running\Displays\PanelCoordinatorView.xaml.cs">
+      <DependentUpon>PanelCoordinatorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Running\Displays\PanelCoordinatorViewModel.cs" />
+    <Compile Include="UI\Running\Displays\TimersView.xaml.cs">
       <DependentUpon>TimersView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Running\TimersViewModel.cs" />
+    <Compile Include="UI\Running\Displays\TimersViewModel.cs" />
     <Compile Include="UI\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
@@ -156,15 +170,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Running\ConfigView.xaml">
+    <Page Include="UI\Running\Configuration\ConfigView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Running\GameRunningView.xaml">
+    <Page Include="UI\Running\Displays\GameRunningView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Running\TimersView.xaml">
+    <Page Include="UI\Running\Displays\IdleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Running\Displays\LoadingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Running\Displays\PanelCoordinatorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Running\Displays\TimersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -184,6 +210,9 @@
     <Resource Include="Resources\Dota2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Content Include="Resources\Clown.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\horn.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

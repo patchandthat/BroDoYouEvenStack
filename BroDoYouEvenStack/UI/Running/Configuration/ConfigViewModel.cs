@@ -5,7 +5,7 @@ using BroDoYouEvenStack.Messages;
 using Caliburn.Micro;
 using Newtonsoft.Json;
 
-namespace BroDoYouEvenStack.UI.Running
+namespace BroDoYouEvenStack.UI.Running.Configuration
 {
     class ConfigViewModel : Screen
     {
@@ -21,6 +21,9 @@ namespace BroDoYouEvenStack.UI.Running
         private bool _isLoaded = false;
 
         private const string ConfigFileName = "Bdyes.config";
+
+        private readonly string _appDataDir =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BroDoYouEvenStack");
 
         public ConfigViewModel(IEventAggregator agg)
         {
@@ -135,12 +138,15 @@ namespace BroDoYouEvenStack.UI.Running
         {
             try
             {
-                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                    ConfigFileName);
+                var path = Path.Combine(_appDataDir, ConfigFileName);
+
+                if (!Directory.Exists(_appDataDir))
+                    Directory.CreateDirectory(_appDataDir);
+
                 string json = JsonConvert.SerializeObject(config, Formatting.Indented);
                 File.WriteAllText(path, json);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //Todo:
                 //_agg.Publish(new ErrorMessage("Unable to save changes"));
@@ -151,7 +157,7 @@ namespace BroDoYouEvenStack.UI.Running
         {
             try
             {
-                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), ConfigFileName);
+                var path = Path.Combine(_appDataDir, ConfigFileName);
                 if (!File.Exists(path)) return;
 
                 string json = File.ReadAllText(path);

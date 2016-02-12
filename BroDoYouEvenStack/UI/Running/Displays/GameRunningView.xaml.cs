@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace BroDoYouEvenStack.UI.Running
+namespace BroDoYouEvenStack.UI.Running.Displays
 {
     /// <summary>
     /// Interaction logic for GameRunningView.xaml

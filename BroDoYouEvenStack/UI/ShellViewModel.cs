@@ -3,7 +3,7 @@ using System.Linq;
 using System.Timers;
 using BroDoYouEvenStack.Messages;
 using BroDoYouEvenStack.UI.Idle;
-using BroDoYouEvenStack.UI.Running;
+using BroDoYouEvenStack.UI.Running.Displays;
 using Caliburn.Micro;
 
 namespace BroDoYouEvenStack.UI
@@ -16,7 +16,7 @@ namespace BroDoYouEvenStack.UI
 
 
         private IScreen _content;
-        private double FIVE_SECONDS = 5 * 1000;
+        private double INTERVAL = 3 * 1000;
         private readonly Timer _timer;
         private bool _lastRunning;
 
@@ -31,7 +31,7 @@ namespace BroDoYouEvenStack.UI
 
             DisplayName = "Bro do you even stack?";
 
-            _timer = new Timer(FIVE_SECONDS);
+            _timer = new Timer(INTERVAL);
             _timer.Elapsed += (sender, args) => Detect();
             _timer.AutoReset = true;
         }
@@ -48,11 +48,11 @@ namespace BroDoYouEvenStack.UI
 
         private void Detect()
         {
-            var running = Process.GetProcessesByName("dota2").Any();
+            var isRunning = Process.GetProcessesByName("dota2").Any();
 
-            if (running != _lastRunning)
+            if (isRunning != _lastRunning)
             {
-                if (running)
+                if (isRunning)
                 {
                     Content = _running;
                     _agg.PublishOnBackgroundThread(new GameOpened());
@@ -64,7 +64,7 @@ namespace BroDoYouEvenStack.UI
                 }
             }
 
-            _lastRunning = running;
+            _lastRunning = isRunning;
         }
 
         public IScreen Content

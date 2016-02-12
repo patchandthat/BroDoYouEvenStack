@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="BroDoYouEvenStack.UI.Running.Displays.IdleView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="450">
+    <StackPanel VerticalAlignment="Center">
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Hello, {nickname}</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Some general instructions.</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Just join a game an your timers will run automatically</TextBlock>
+        <Separator></Separator>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">If you like using this app, please show it some love on {link button}Github</TextBlock>
+    </StackPanel>
+</UserControl>
