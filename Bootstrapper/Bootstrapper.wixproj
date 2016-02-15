@@ -4,10 +4,10 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>3.10</ProductVersion>
-    <ProjectGuid>05a04514-3d6a-4404-bd55-31baac819cfd</ProjectGuid>
+    <ProjectGuid>fb6af6f2-dd49-402d-9bf0-9634d5bcf3bf</ProjectGuid>
     <SchemaVersion>2.0</SchemaVersion>
-    <OutputName>Installer</OutputName>
-    <OutputType>Package</OutputType>
+    <OutputName>Bootstrapper</OutputName>
+    <OutputType>Bundle</OutputType>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' AND '$(MSBuildExtensionsPath32)' != '' ">$(MSBuildExtensionsPath32)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
@@ -21,38 +21,34 @@
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Fragments\Components\AppFiles.wxs" />
-    <Compile Include="Fragments\Components\DotaConfigFiles.wxs" />
-    <Compile Include="Fragments\CustomActions.wxs" />
-    <Compile Include="Fragments\Directories.wxs" />
-    <Compile Include="Fragments\Features.wxs" />
-    <Compile Include="Fragments\InstallSequence.wxs" />
-    <Compile Include="Fragments\Properties.wxs" />
-    <Compile Include="Product.wxs" />
+    <Compile Include="Bundle.wxs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Fragments\Components\" />
-    <Folder Include="Includes" />
-    <Folder Include="Fragments" />
-    <Folder Include="XSL" />
+    <WixExtension Include="WixUtilExtension">
+      <HintPath>$(WixExtDir)\WixUtilExtension.dll</HintPath>
+      <Name>WixUtilExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixNetFxExtension">
+      <HintPath>$(WixExtDir)\WixNetFxExtension.dll</HintPath>
+      <Name>WixNetFxExtension</Name>
+    </WixExtension>
+    <WixExtension Include="WixBalExtension">
+      <HintPath>$(WixExtDir)\WixBalExtension.dll</HintPath>
+      <Name>WixBalExtension</Name>
+    </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Heat commands.txt" />
-    <Content Include="Includes\SourceFilePaths.wxi" />
-    <Content Include="XSL\Transform.xslt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BroDoYouEvenStack\BroDoYouEvenStack.csproj">
-      <Name>BroDoYouEvenStack</Name>
-      <Project>{e51d6469-e1f8-4201-bf32-152339aefd4d}</Project>
+    <ProjectReference Include="..\Bootstrapper.Interface\Bootstrapper.Interface.csproj">
+      <Name>Bootstrapper.Interface</Name>
+      <Project>{0cb5d7fe-de4c-4f6a-a8e9-821203a1a910}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Dota2GSI\Dota2GSI.csproj">
-      <Name>Dota2GSI</Name>
-      <Project>{ed6f76c6-a3fc-40f2-9b9b-3c47093a4b6f}</Project>
+    <ProjectReference Include="..\Installer\Installer.wixproj">
+      <Name>Installer</Name>
+      <Project>{05a04514-3d6a-4404-bd55-31baac819cfd}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
@@ -60,9 +56,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
-  <PropertyGroup>
-    <PreBuildEvent />
-  </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
 	Other similar extension points exist, see Wix.targets.

@@ -146,7 +146,7 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
                 string json = JsonConvert.SerializeObject(config, Formatting.Indented);
                 File.WriteAllText(path, json);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Todo:
                 //_agg.Publish(new ErrorMessage("Unable to save changes"));
