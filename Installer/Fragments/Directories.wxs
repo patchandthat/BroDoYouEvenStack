@@ -8,7 +8,6 @@
             </Directory>
 
             <Directory Id="DOTA_CONFIG_DIR">
-                <!-- Todo Pass property from bootstrapper -->
                 <Directory Id="DotaGsiDir" Name="gamestate_integration"></Directory>
             </Directory>
 
