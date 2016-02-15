@@ -25,6 +25,7 @@ namespace BroDoYouEvenStack.UI.Running.Displays
             _stateScreens.Add(DOTA_GameState.DOTA_GAMERULES_STATE_GAME_IN_PROGRESS, timers);
             _stateScreens.Add(DOTA_GameState.DOTA_GAMERULES_STATE_POST_GAME, inactive);
             _stateScreens.Add(DOTA_GameState.DOTA_GAMERULES_STATE_DISCONNECT, inactive);
+            _stateScreens.Add(DOTA_GameState.DOTA_GAMERULES_STATE_CUSTOM_GAME_SETUP, inactive);
 
             ActiveScreen = inactive;
         }
