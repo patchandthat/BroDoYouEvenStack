@@ -38,6 +38,14 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Bootstrapper.Interface\Bootstrapper.Interface.csproj">
+      <Name>Bootstrapper.Interface</Name>
+      <Project>{0cb5d7fe-de4c-4f6a-a8e9-821203a1a910}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\Installer\Installer.wixproj">
       <Name>Installer</Name>
       <Project>{05a04514-3d6a-4404-bd55-31baac819cfd}</Project>

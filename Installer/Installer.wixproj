@@ -41,6 +41,24 @@
     <Content Include="Includes\SourceFilePaths.wxi" />
     <Content Include="XSL\Transform.xslt" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BroDoYouEvenStack\BroDoYouEvenStack.csproj">
+      <Name>BroDoYouEvenStack</Name>
+      <Project>{e51d6469-e1f8-4201-bf32-152339aefd4d}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\Dota2GSI\Dota2GSI.csproj">
+      <Name>Dota2GSI</Name>
+      <Project>{ed6f76c6-a3fc-40f2-9b9b-3c47093a4b6f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
     <PreBuildEvent />

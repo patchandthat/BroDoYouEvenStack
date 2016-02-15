@@ -15,7 +15,7 @@ namespace BroDoYouEvenStack.UI
         private readonly IEventAggregator _agg;
 
 
-        private IScreen _content;
+        private IScreen _windowContent;
         private double INTERVAL = 3 * 1000;
         private readonly Timer _timer;
         private bool _lastRunning;
@@ -41,7 +41,7 @@ namespace BroDoYouEvenStack.UI
         /// </summary>
         protected override void OnInitialize()
         {
-            Content = _idle;
+            WindowContent = _idle;
 
             _timer.Start();
         }
@@ -54,12 +54,12 @@ namespace BroDoYouEvenStack.UI
             {
                 if (isRunning)
                 {
-                    Content = _running;
+                    WindowContent = _running;
                     _agg.PublishOnBackgroundThread(new GameOpened());
                 }
                 else
                 {
-                    Content = _idle;
+                    WindowContent = _idle;
                     _agg.PublishOnBackgroundThread(new GameClosed());
                 }
             }
@@ -67,14 +67,14 @@ namespace BroDoYouEvenStack.UI
             _lastRunning = isRunning;
         }
 
-        public IScreen Content
+        public IScreen WindowContent
         {
-            get { return _content; }
+            get { return _windowContent; }
             set
             {
-                if (Equals(value, _content)) return;
-                _content = value;
-                NotifyOfPropertyChange(() => Content);
+                if (Equals(value, _windowContent)) return;
+                _windowContent = value;
+                NotifyOfPropertyChange(() => WindowContent);
             }
         }
     }

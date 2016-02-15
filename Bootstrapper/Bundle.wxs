@@ -2,17 +2,17 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-	<Bundle Name="!(bind.packageName.Installer)" 
-            Version="!(bind.packageVersion.Installer)" 
-            Manufacturer="!(bind.packageManufacturer.Installer)" 
+	<Bundle Name="!(bind.packageName.bdyesInstaller)" 
+            Version="!(bind.packageVersion.bdyesInstaller)" 
+            Manufacturer="!(bind.packageManufacturer.bdyesInstaller)" 
             UpgradeCode="fb6af6f2-dd49-402d-9bf0-9634d5bcf3bf"
             AboutUrl="https://github.com/patchandthat/BroDoYouEvenStack">
 
         <BootstrapperApplicationRef Id="ManagedBootstrapperApplicationHost">
             <Payload Name="BootstrapperCore.config" SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\BootstrapperCore.config"/>
 
-            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\OutreachServerInstall.BootstrapperInterface.dll"/>
-            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\OutreachServerInstall.BootstrapperInterface.pdb"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\Bootstrapper.Interface.dll"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\Bootstrapper.Interface.pdb"/>
             <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\Microsoft.Deployment.WindowsInstaller.dll"/>
             <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\System.Windows.Interactivity.dll"/>
             <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\BootstrapperCore.dll"/>
