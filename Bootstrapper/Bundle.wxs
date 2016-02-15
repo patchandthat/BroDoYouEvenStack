@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
+     xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+	<Bundle Name="!(bind.packageName.Installer)" 
+            Version="!(bind.packageVersion.Installer)" 
+            Manufacturer="!(bind.packageManufacturer.Installer)" 
+            UpgradeCode="fb6af6f2-dd49-402d-9bf0-9634d5bcf3bf"
+            AboutUrl="https://github.com/patchandthat/BroDoYouEvenStack">
+
+        <BootstrapperApplicationRef Id="ManagedBootstrapperApplicationHost">
+            <Payload Name="BootstrapperCore.config" SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\BootstrapperCore.config"/>
+
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\OutreachServerInstall.BootstrapperInterface.dll"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\OutreachServerInstall.BootstrapperInterface.pdb"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\Microsoft.Deployment.WindowsInstaller.dll"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\System.Windows.Interactivity.dll"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\BootstrapperCore.dll"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\Caliburn.Micro.dll"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\Caliburn.Micro.Platform.dll"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\Autofac.dll"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\Mahapps.Metro.dll"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\MaterialDesignColors.dll"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\MaterialDesignThemes.Mahapps.dll"/>
+            <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\MaterialDesignThemes.Wpf.dll"/>
+            
+        </BootstrapperApplicationRef>
+
+        <!-- Dota config dir, required for game state integration -->
+        <Variable Name="DotaConfigDir" bal:Overridable="yes" Type="string" Value=""/>
+        
+		<Chain>
+            <PackageGroupRef Id="NetFx45Redist" />
+            <RollbackBoundary />
+            <MsiPackage Id="bdyesInstaller" SourceFile="$(var.Installer.TargetPath)" Compressed="yes" DisplayInternalUI="no">
+                <MsiProperty Name="DOTA_CONFIG_DIR" Value="[DotaConfigDir]"/>
+            </MsiPackage>
+		</Chain>
+	</Bundle>
+</Wix>

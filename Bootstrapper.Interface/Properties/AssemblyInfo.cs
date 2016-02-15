@@ -5,10 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Installer.GsiCfg.CA")]
+[assembly: AssemblyTitle("Bootstrapper.Interface")]
 [assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Installer.GsiCfg.CA")]
+[assembly: AssemblyProduct("Bootstrapper.Interface")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c3ed56a3-3c10-4ae1-be4a-f33331b2fbad")]
+[assembly: Guid("0cb5d7fe-de4c-4f6a-a8e9-821203a1a910")]
 
 // Version information for an assembly consists of the following four values:
 //

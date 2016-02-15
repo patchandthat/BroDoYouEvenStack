@@ -11,3 +11,6 @@ BroDoYouEvenStack.Tests/bin/
 BroDoYouEvenStack.Tests/obj/
 Installer/obj/
 Installer/bin/
+Bootstrapper.Interface/obj/
+Bootstrapper/obj/
+Bootstrapper.Interface/bin/
