@@ -40,7 +40,7 @@
                 re: issue #1
                 https://sourceforge.net/p/wix/mailman/wix-users/thread/386FE1056B6A414DB4145795557232AF47E6942352%40Exchange.ovx.local/#msg27994290
             -->
-            <PackageGroupRef Id="NetFx45Web" />
+            <PackageGroupRef Id="NetFx46Web" />
             <RollbackBoundary />
             <MsiPackage Id="bdyesInstaller" SourceFile="$(var.Installer.TargetPath)" Compressed="yes" DisplayInternalUI="no">
                 <MsiProperty Name="DOTA_CONFIG_DIR" Value="[DotaConfigDir]"/>
