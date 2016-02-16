@@ -1,0 +1,10 @@
+﻿<av:ResourceDictionary xmlns=" http://schemas.microsoft.com/winfx/2006/xaml/presentation "
+  xmlns:x=" http://schemas.microsoft.com/winfx/2006/xaml "
+  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    
+    <!-- Can I use this to replace app.xaml? -->
+    
+</av:ResourceDictionary>
+
+
+

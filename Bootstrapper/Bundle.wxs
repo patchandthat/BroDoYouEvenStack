@@ -9,6 +9,7 @@
             AboutUrl="https://github.com/patchandthat/BroDoYouEvenStack">
 
         <BootstrapperApplicationRef Id="ManagedBootstrapperApplicationHost">
+            
             <Payload Name="BootstrapperCore.config" SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\BootstrapperCore.config"/>
 
             <Payload SourceFile="..\Bootstrapper.Interface\bin\$(var.Configuration)\Bootstrapper.Interface.dll"/>
@@ -30,7 +31,16 @@
         <Variable Name="DotaConfigDir" bal:Overridable="yes" Type="string" Value=""/>
         
 		<Chain>
-            <PackageGroupRef Id="NetFx45Redist" />
+            <!-- Todo: get this detecting properly, ideally without taking the old approach of bundling as an MsiPackage.  
+            See refs:
+                http://wixtoolset.org/documentation/manual/v3/howtos/redistributables_and_install_checks/install_dotnet.html
+                http://stackoverflow.com/questions/13513664/how-to-install-net-4-5-with-a-wix-bundle
+                http://wixtoolset.org/documentation/manual/v3/customactions/wixnetfxextension.html
+                
+                re: issue #1
+                https://sourceforge.net/p/wix/mailman/wix-users/thread/386FE1056B6A414DB4145795557232AF47E6942352%40Exchange.ovx.local/#msg27994290
+            -->
+            <PackageGroupRef Id="NetFx45Web" />
             <RollbackBoundary />
             <MsiPackage Id="bdyesInstaller" SourceFile="$(var.Installer.TargetPath)" Compressed="yes" DisplayInternalUI="no">
                 <MsiProperty Name="DOTA_CONFIG_DIR" Value="[DotaConfigDir]"/>
