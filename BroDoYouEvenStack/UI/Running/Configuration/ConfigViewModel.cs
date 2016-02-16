@@ -16,6 +16,8 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
         private int _runeSecondsWarning;
         private bool _creepToggle;
         private bool _runeToggle;
+        private int _gsiPort;
+        private const int DEFAULT_PORT = 4000;
 
         //Todo: interlock
         private bool _isLoaded = false;
@@ -25,10 +27,14 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
         private readonly string _appDataDir =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BroDoYouEvenStack");
 
+        
+
         public ConfigViewModel(IEventAggregator agg)
         {
             _agg = agg;
             _agg.Subscribe(this);
+
+            _gsiPort = DEFAULT_PORT;
 
             Load();
         }
@@ -119,19 +125,26 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
 
         private void ConfigChanged()
         {
-            var config = new Config(
-                _runeToggle,
-                _creepToggle,
-                _runeSecondsWarning,
-                _creepSecondsWarning,
-                _runeStopWarningAfterMinutes,
-                _creepStopWarningAfterMinutes);
+            var config = GetConfigObject();
 
             _agg.PublishOnBackgroundThread(new ConfigChanged(config));
 
             if (!_isLoaded) return;
             //Todo: test, maybe bang these into a concurrent queue, may get loads of these requests when you whizz the slider up and down.
             Task.Run(() => Save(config));
+        }
+
+        private Config GetConfigObject()
+        {
+            var config = new Config(
+                _runeToggle,
+                _creepToggle,
+                _runeSecondsWarning,
+                _creepSecondsWarning,
+                _runeStopWarningAfterMinutes,
+                _creepStopWarningAfterMinutes,
+                _gsiPort);
+            return config;
         }
 
         private void Save(Config config)
@@ -171,16 +184,26 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
                 RuneSecondsWarning = settings.RuneSecondsWarning;
                 RuneStopWarningAfterMinutes = settings.RuneStopWarningAfterMinutes;
 
-                ConfigChanged();
+                _gsiPort = settings.GameStateIntegrationPort;
             }
             catch (Exception)
             {
-                //It's ok, just fall back to defaults if the file is garbage
+                //It's ok, just fall back to defaults if the file is garbage, will overwrite it anyway
             }
             finally
             {
+                //Publish settings to relevant parties
+                ConfigFirstLoaded();
+                ConfigChanged(); //todo make obsolete
                 _isLoaded = true;
             }
+        }
+
+        private void ConfigFirstLoaded()
+        {
+            var config = GetConfigObject();
+
+            _agg.PublishOnBackgroundThread(new ConfigFirstLoaded(config));
         }
     }
 }

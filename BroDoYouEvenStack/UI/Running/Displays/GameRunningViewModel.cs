@@ -5,12 +5,12 @@ using Dota2GSI;
 
 namespace BroDoYouEvenStack.UI.Running.Displays
 {
-    class GameRunningViewModel : Screen, IHandle<GameOpened>, IHandle<GameClosed>
+    class GameRunningViewModel : Screen, IHandle<GameOpened>, IHandle<GameClosed>, IHandle<ConfigFirstLoaded>
     {
         private readonly IEventAggregator _agg;
         private IScreen _panels;
         private IScreen _config;
-        private readonly GameStateListener _listener;
+        private GameStateListener _listener;
 
         /// <summary>
         /// Creates an instance of the screen.
@@ -21,9 +21,6 @@ namespace BroDoYouEvenStack.UI.Running.Displays
             _panels = panels;
             _config = config;
             _agg.Subscribe(this);
-            _listener = new GameStateListener(4000);
-
-            _listener.NewGameState += OnNewGameState;
         }
 
         public IScreen Config
@@ -69,6 +66,15 @@ namespace BroDoYouEvenStack.UI.Running.Displays
         public void Handle(GameClosed message)
         {
             _listener.Stop();
+        }
+
+        public void Handle(ConfigFirstLoaded message)
+        {
+            if (_listener == null)
+            {
+                _listener = new GameStateListener(4000);
+                _listener.NewGameState += OnNewGameState;
+            }
         }
     }
 }
