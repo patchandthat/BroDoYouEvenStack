@@ -61,15 +61,15 @@ namespace Bootstrapper.Interface.UI
 
         public void Install()
         {
-            _ba.Engine.StringVariables["DotaConfigDir"] = "THE PATH TO DOTA'S CONFIG DIRECTORY";
+            //_ba.Engine.StringVariables["DotaConfigDir"] = "THE PATH TO DOTA'S CONFIG DIRECTORY";
 
-            //IsBusy = true;
-            _ba.Engine.Plan(LaunchAction.Install);
+            ////IsBusy = true;
+            //_ba.Engine.Plan(LaunchAction.Install);
         }
 
         public void Uninstall()
         {
-            this.Plan(LaunchAction.Uninstall);
+            //this.Plan(LaunchAction.Uninstall);
         }
 
         #region Engine Events

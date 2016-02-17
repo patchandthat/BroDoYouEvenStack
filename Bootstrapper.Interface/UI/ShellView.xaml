@@ -5,13 +5,28 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Bootstrapper.Interface.UI"
              xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             GlowBrush="{DynamicResource AccentColorBrush}"
+             BorderThickness="1"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             Background="{DynamicResource MaterialDesignPaper}"
+             TextElement.FontWeight="Medium"
+             TextElement.FontSize="14"
+             FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ResourceDicts.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
+    
     <StackPanel VerticalAlignment="Center">
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Bootstrapper interface shell</TextBlock>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap">Figure out how to integrate the Material Design styling...</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8">Bootstrapper interface shell</TextBlock>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="8">Figure out how to integrate the Material Design styling...</TextBlock>
         <Separator></Separator>
-        <Button x:Name="Install">Install</Button>
-        <Button x:Name="Uninstall">Uninstall</Button>
+        <Button x:Name="Install" Margin="16">Install</Button>
+        <Button x:Name="Uninstall" Margin="16">Uninstall</Button>
     </StackPanel>
 </controls:MetroWindow>

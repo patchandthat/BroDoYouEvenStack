@@ -82,9 +82,6 @@
     <Compile Include="BootstrapperInterfaceEntrypoint.cs" />
     <Compile Include="CaliburnMicroBootstrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\ResourceDicts.xaml.cs">
-      <DependentUpon>ResourceDicts.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
