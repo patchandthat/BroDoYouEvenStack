@@ -16,7 +16,9 @@ namespace Bootstrapper.Interface.Util
 
             We could also automatically search the whole machine for the DOTA folder, 
             display a progress indicator, and have a button for the user to manually specify the directory.
-            I much prefer it to be automated by default            
+            I much prefer it to be automated by default   
+            
+            Check the registry first to see if we're upgrading from an earlier version of BDYES         
     */
 
     class DotaDirectoryLocator
