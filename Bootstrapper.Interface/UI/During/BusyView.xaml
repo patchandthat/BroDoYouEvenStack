@@ -17,12 +17,10 @@
     </UserControl.Resources>
 
     <Grid>
-        <materialDesign:Card>
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+        <materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center" Width="200">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Margin="8">Installing...</TextBlock>
-                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
-                     Value="0"
-                     IsIndeterminate="True" Margin="8"></ProgressBar>
+                <ProgressBar Value="0" IsIndeterminate="True" Margin="8"></ProgressBar>
             </StackPanel>
         </materialDesign:Card>
     </Grid>
