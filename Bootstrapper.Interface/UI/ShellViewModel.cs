@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
 using Bootstrapper.Interface.Messages;
+using Bootstrapper.Interface.UI.Terminal;
 using Bootstrapper.Interface.Util;
 using Caliburn.Micro;
 using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
@@ -35,13 +36,13 @@ namespace Bootstrapper.Interface.UI
         private const int ERROR_UserCancelled = 1223;
         private IntPtr hwnd;
         private Dictionary<string, int> downloadRetries = new Dictionary<string, int>();
-        private LaunchAction plannedAction;
+        private LaunchAction _plannedAction;
         private InstallationState _state;
 
         private readonly BootstrapperApplication _ba;
         private readonly IEventAggregator _agg;
         private PropertyChangedBase _activeViewModel;
-        private List<IScreen> _screens;
+        private readonly List<IScreen> _screens;
 
         private bool _dotaDirectoryKnown = false;
 
@@ -50,7 +51,8 @@ namespace Bootstrapper.Interface.UI
             DotaDetectedViewModel detected,
             BusyViewModel busy,
             ErrorViewModel error,
-            SuccessViewModel success)
+            InstallSuccessViewModel installSuccess,
+            UninstallSuccessViewModel uninstallSuccess)
         {
             DisplayName = "Bro do you even stack? Installer";
 
@@ -85,7 +87,8 @@ namespace Bootstrapper.Interface.UI
                 detected,
                 busy,
                 error,
-                success
+                installSuccess,
+                uninstallSuccess
             };
 
             _agg.PublishOnBackgroundThread(new DirectorySearchMessages.SearchForDotaDirectory());
@@ -110,8 +113,9 @@ namespace Bootstrapper.Interface.UI
         public void Handle(DirectorySearchMessages.DotaDirectoryFound message)
         {
             _dotaDirectoryKnown = true;
-            ActiveViewModel = _screens.OfType<DotaDetectedViewModel>().First();
             _ba.Engine.StringVariables["DotaConfigDir"] = message.Path;
+
+            ActiveViewModel = _screens.OfType<DotaDetectedViewModel>().First();
         }
 
         public void Handle(DirectorySearchMessages.DotaDirectoryNotFound message)
@@ -121,7 +125,9 @@ namespace Bootstrapper.Interface.UI
 
         public void Handle(TerminationMessages.Success message)
         {
-            ActiveViewModel = _screens.OfType<SuccessViewModel>().First();
+            ActiveViewModel = _plannedAction == LaunchAction.Install
+                ? (PropertyChangedBase)_screens.OfType<InstallSuccessViewModel>().First()
+                : (PropertyChangedBase)_screens.OfType<UninstallSuccessViewModel>().First();
         }
 
         public void Handle(TerminationMessages.Error message)
@@ -136,18 +142,22 @@ namespace Bootstrapper.Interface.UI
         public void Install()
         {
             ActiveViewModel = _screens.OfType<BusyViewModel>().First();
+            _plannedAction = LaunchAction.Install;
             _ba.Engine.Plan(LaunchAction.Install);
+
         }
 
         public void Uninstall()
         {
             ActiveViewModel = _screens.OfType<BusyViewModel>().First();
+            _plannedAction = LaunchAction.Uninstall;
             this.Plan(LaunchAction.Uninstall);
         }
 
         public void Update()
         {
             ActiveViewModel = _screens.OfType<BusyViewModel>().First();
+            _plannedAction = LaunchAction.Install;
             Plan(LaunchAction.UpdateReplace);
         }
 
@@ -203,7 +213,7 @@ namespace Bootstrapper.Interface.UI
 
         private void Plan(LaunchAction action)
         {
-            this.plannedAction = action;
+            this._plannedAction = action;
             this.hwnd = (Application.Current.MainWindow == null) ? IntPtr.Zero : new WindowInteropHelper(Application.Current.MainWindow).Handle;
 
             this.Cancelled = false;

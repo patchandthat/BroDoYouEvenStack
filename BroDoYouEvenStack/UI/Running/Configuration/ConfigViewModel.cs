@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace BroDoYouEvenStack.UI.Running.Configuration
 {
-    class ConfigViewModel : Screen
+    class ConfigViewModel : Screen, IHandle<FirstLoad>
     {
         private readonly IEventAggregator _agg;
         private int _creepStopWarningAfterMinutes;
@@ -33,8 +33,6 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
             _agg.Subscribe(this);
 
             _gsiPort = DEFAULT_PORT;
-
-            Load();
         }
 
         public bool RuneToggle
@@ -202,6 +200,15 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
             var config = GetConfigObject();
 
             _agg.PublishOnBackgroundThread(new ConfigFirstLoaded(config));
+        }
+
+        /// <summary>
+        /// Handles the message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        public void Handle(FirstLoad message)
+        {
+            Load();
         }
     }
 }

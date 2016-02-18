@@ -72,7 +72,7 @@ namespace BroDoYouEvenStack.UI.Running.Displays
         {
             if (_listener == null)
             {
-                _listener = new GameStateListener(4000);
+                _listener = new GameStateListener(message.Config.GameStateIntegrationPort);
                 _listener.NewGameState += OnNewGameState;
             }
         }

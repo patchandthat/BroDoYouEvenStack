@@ -97,6 +97,7 @@
     <Compile Include="Messages\ConfigChanged.cs" />
     <Compile Include="Messages\ConfigFirstLoaded.cs" />
     <Compile Include="Messages\ErrorMessage.cs" />
+    <Compile Include="Messages\FirstLoad.cs" />
     <Compile Include="Messages\GameClosed.cs" />
     <Compile Include="Messages\GameOpened.cs" />
     <Compile Include="UI\Idle\GameNotRunningView.xaml.cs">

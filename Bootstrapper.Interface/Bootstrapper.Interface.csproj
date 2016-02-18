@@ -107,10 +107,14 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\ShellViewModel.cs" />
-    <Compile Include="UI\Terminal\SuccessView.xaml.cs">
-      <DependentUpon>SuccessView.xaml</DependentUpon>
+    <Compile Include="UI\Terminal\InstallSuccessView.xaml.cs">
+      <DependentUpon>InstallSuccessView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Terminal\SuccessViewModel.cs" />
+    <Compile Include="UI\Terminal\InstallSuccessViewModel.cs" />
+    <Compile Include="UI\Terminal\UninstallSuccessView.xaml.cs">
+      <DependentUpon>UninstallSuccessView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Terminal\UninstallSuccessViewModel.cs" />
     <Compile Include="Util\DirectorySearchResult.cs" />
     <Compile Include="Util\DotaDirectoryLocator.cs" />
     <Compile Include="Util\SearchOutcome.cs" />
@@ -148,7 +152,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Terminal\SuccessView.xaml">
+    <Page Include="UI\Terminal\InstallSuccessView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Terminal\UninstallSuccessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
