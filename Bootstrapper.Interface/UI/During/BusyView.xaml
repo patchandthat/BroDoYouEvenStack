@@ -9,20 +9,21 @@
              d:DesignHeight="300" d:DesignWidth="300">
     
     <UserControl.Resources>
-        <ResourceDictionary>
+        <!--<ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ResourceDicts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ProgressBar.xaml" />
+                <ResourceDictionary Source="UI\ResourceDicts.xaml" />
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        </ResourceDictionary>-->
     </UserControl.Resources>
 
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-        <TextBlock>Busy installing</TextBlock>
-        <materialDesign:Card UniformCornerRadius="14" Padding="4">
-            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
-                     Value="35"
-                     IsIndeterminate="True"></ProgressBar>
+    <Grid>
+        <materialDesign:Card>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock Margin="8">Installing...</TextBlock>
+                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
+                     Value="0"
+                     IsIndeterminate="True" Margin="8"></ProgressBar>
+            </StackPanel>
         </materialDesign:Card>
-    </StackPanel>
+    </Grid>
 </UserControl>

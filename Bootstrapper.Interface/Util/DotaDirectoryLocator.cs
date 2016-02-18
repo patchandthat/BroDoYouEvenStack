@@ -153,21 +153,38 @@ namespace Bootstrapper.Interface.Util
 
         private DirectorySearchResult PerformSearch(CancellationToken token)
         {
-            EnqueueDirsToSearchAsync(token);
+            var cts = new CancellationTokenSource();
+            EnqueueDirsToSearchAsync(cts.Token);
 
             string configPath;
 
             configPath = GetConfigPathFromRegistryOrNull(token);
-            if (!string.IsNullOrEmpty(configPath)) return new DirectorySearchResult(SearchOutcome.Found, configPath);
+            if (!string.IsNullOrEmpty(configPath))
+            {
+                cts.CancelAfter(1000);
+                return new DirectorySearchResult(SearchOutcome.Found, configPath);
+            }
 
             configPath = CheckDefaultSteamDirectoryOrNull(token);
-            if (!string.IsNullOrEmpty(configPath)) return new DirectorySearchResult(SearchOutcome.Found, configPath);
+            if (!string.IsNullOrEmpty(configPath))
+            {
+                cts.CancelAfter(1000);
+                return new DirectorySearchResult(SearchOutcome.Found, configPath);
+            }
 
             configPath = CheckAllDrivesForSteamLibrariesOrNull(token);
-            if (!string.IsNullOrEmpty(configPath)) return new DirectorySearchResult(SearchOutcome.Found, configPath);
+            if (!string.IsNullOrEmpty(configPath))
+            {
+                cts.CancelAfter(1000);
+                return new DirectorySearchResult(SearchOutcome.Found, configPath);
+            }
 
             configPath = SearchAllFixedDrivesOrNull(token);
-            if (!string.IsNullOrEmpty(configPath)) return new DirectorySearchResult(SearchOutcome.Found, configPath);
+            if (!string.IsNullOrEmpty(configPath))
+            {
+                cts.CancelAfter(1000);
+                return new DirectorySearchResult(SearchOutcome.Found, configPath);
+            }
 
             return new DirectorySearchResult(SearchOutcome.NotFound);
         }
@@ -270,7 +287,10 @@ namespace Bootstrapper.Interface.Util
                              {
                                  try
                                  {
-                                     token.ThrowIfCancellationRequested();
+                                     if (token.IsCancellationRequested)
+                                     {
+                                         return;
+                                     }
 
                                      _dirsToSearch.Enqueue(dir);
                                      GetAllFoldersUnder(dir, token);
@@ -292,7 +312,7 @@ namespace Bootstrapper.Interface.Util
 
         private void GetAllFoldersUnder(string path, CancellationToken token)
         {
-            token.ThrowIfCancellationRequested();
+            if (token.IsCancellationRequested) return;
 
             try
             {
