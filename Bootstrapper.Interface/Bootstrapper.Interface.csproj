@@ -97,7 +97,10 @@
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\ShellViewModel.cs" />
+    <Compile Include="Util\DirectorySearchResult.cs" />
+    <Compile Include="Util\DirectorySearchEventArgs.cs" />
     <Compile Include="Util\DotaDirectoryLocator.cs" />
+    <Compile Include="Util\SearchOutcome.cs" />
     <Compile Include="WixLog.cs" />
   </ItemGroup>
   <ItemGroup>

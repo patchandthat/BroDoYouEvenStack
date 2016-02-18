@@ -26,9 +26,7 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
 
         private readonly string _appDataDir =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BroDoYouEvenStack");
-
         
-
         public ConfigViewModel(IEventAggregator agg)
         {
             _agg = agg;

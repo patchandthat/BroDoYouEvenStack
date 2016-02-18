@@ -1,65 +1,318 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Security;
+using System.Security.AccessControl;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Win32;
 
 namespace Bootstrapper.Interface.Util
 {
-    /*
-            Try to identify the dota2 directory.
-            Obvious choice is %programfiles%\Steam\Steamapps\common
-            Also check the root of each drive for a "SteamLibrary" dir
-            Else fallback to letting the user pick via dialog in bootstrapper ui
-            Ultimately looking for the "dota 2 beta\game\dota\cfg" directory.
-            Once found, should write this to registry to make uninstallation & updates easier
-
-            We could also automatically search the whole machine for the DOTA folder, 
-            display a progress indicator, and have a button for the user to manually specify the directory.
-            I much prefer it to be automated by default   
-            
-            Check the registry first to see if we're upgrading from an earlier version of BDYES         
-    */
-
     class DotaDirectoryLocator
     {
-        public DirectoryLocationResult SearchForDotaDirectory()
-        {
-            //Todo:
-            //Async, support cancellation, indicate busy status, current directory, overall progress
+        private const string LikelyLocationsText = "Default install locations";
 
-            throw new NotImplementedException();
+        private const string RegistryKeyLocation = @"Software\BroDoYouEvenStack";
+        private const string ConfigPathValueName = "DotaConfigDir";
+
+        private const string DefaultSteamLibraryInstallDir = @"SteamLibrary\Steamapps\common\dota 2 beta";
+        private const string DefaultProgramFilesSteamInstallDir = @"Steam\Steamapps\common\dota 2 beta";
+
+        private const string DotaInstallDir = "dota 2 beta";
+        private const string DotaConfigFolderSubPath = @"game\dota\cfg";
+
+        private readonly ConcurrentQueue<string> _dirsToSearch = new ConcurrentQueue<string>();
+        private readonly CancellationTokenSource _cts;
+        private string _currentSearchLocation;
+
+        public DotaDirectoryLocator()
+        {
+            IsBusy = false;
+            CurrentSearchLocation = "";
+            IsFound = false;
+
+            _cts = new CancellationTokenSource();
         }
 
-        public void SpecifyDirectoryManually(string path)
+        //Todo: lock prop backing vars
+        public bool IsFound { get; private set; }
+        public bool IsBusy { get; private set; }
+
+        private readonly object _locationLock = new object();
+        private bool _doneFindingDirs = false;
+
+        public string CurrentSearchLocation
         {
-            //Cancels the async operation, and uses the path provided as the Dota2 directory.
-            //Do some validation here, and possibly adjust the path so that we know we're in the right place
+            get
+            {
+                lock (_locationLock)
+                {
+                    return _currentSearchLocation;
+                }
+            }
+            private set
+            {
+                lock (_locationLock)
+                {
+                    _currentSearchLocation = value;
+                }
+            }
+        }
+
+        public string UserPath { get; private set; }
+
+        public DirectorySearchResult SearchForDotaDirectory()
+        {
+            if (!IsBusy)
+            {
+                var result = Task.Run(() =>
+                                      {
+                                          try
+                                          {
+                                              IsBusy = true;
+                                              return PerformSearch(_cts.Token);
+                                          }
+                                          catch (OperationCanceledException)
+                                          {
+                                              CurrentSearchLocation = "Cancelled";
+                                              //User specified the directory manually, and it was valid.
+                                              return new DirectorySearchResult(SearchOutcome.Found, UserPath);
+                                          }
+                                          catch (UnauthorizedAccessException)
+                                          {
+                                              //todo: friendly failure message
+                                              throw;
+                                          }
+                                          catch (IOException)
+                                          {
+                                              //Todo: Can probably retry in this case
+                                              throw;
+                                          }
+                                          catch (SecurityException)
+                                          {
+                                              //todo: friendly failure message
+                                              throw;
+                                          }
+                                          finally
+                                          {
+                                              IsBusy = false;
+                                          }
+                                      }, _cts.Token);
+                return result.Result;
+            }
+
+            return new DirectorySearchResult(SearchOutcome.NotFound);
+        }
+
+        public bool SpecifyDirectoryManually(string path)
+        {
+            bool valid = IsValidDota2Directory(path);
+
+            if (valid && !IsFound)
+            {
+                IsFound = true;
+                UserPath = Path.Combine(path, DotaConfigFolderSubPath);
+                try
+                {
+                    _cts.Cancel();
+                }
+                catch(Exception ex)
+                { }
+            }
+
+            return valid;
+        }
+
+        private bool IsValidDota2Directory(string path)
+        {
+            if (!Directory.Exists(path)) return false;
+
+            if (path.EndsWith("dota 2 beta", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return true;
+            }
+            
+            //If we have a subdir, backtrack to dota2beta
+            DirectoryInfo parent = Directory.GetParent(path);
+            while (parent != null)
+            {
+                path = parent.FullName;
+                if (path.EndsWith("dota 2 beta", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+
+                parent = Directory.GetParent(path);
+            }
+
+            return false;
+        }
+
+        private DirectorySearchResult PerformSearch(CancellationToken token)
+        {
+            EnqueueDirsToSearchAsync(token);
+
+            string configPath;
+
+            configPath = GetConfigPathFromRegistryOrNull(token);
+            if (!string.IsNullOrEmpty(configPath)) return new DirectorySearchResult(SearchOutcome.Found, configPath);
+
+            configPath = CheckDefaultSteamDirectoryOrNull(token);
+            if (!string.IsNullOrEmpty(configPath)) return new DirectorySearchResult(SearchOutcome.Found, configPath);
+
+            configPath = CheckAllDrivesForSteamLibrariesOrNull(token);
+            if (!string.IsNullOrEmpty(configPath)) return new DirectorySearchResult(SearchOutcome.Found, configPath);
+
+            configPath = SearchAllFixedDrivesOrNull(token);
+            if (!string.IsNullOrEmpty(configPath)) return new DirectorySearchResult(SearchOutcome.Found, configPath);
+
+            return new DirectorySearchResult(SearchOutcome.NotFound);
+        }
+
+        private string GetConfigPathFromRegistryOrNull(CancellationToken token)
+        {
+            CurrentSearchLocation = "Checking for previous installations";
+            string path = null;
+
+            using (var key = Registry.LocalMachine.OpenSubKey(RegistryKeyLocation, RegistryKeyPermissionCheck.ReadSubTree, RegistryRights.ReadKey))
+            {
+                object o = key?.GetValue(ConfigPathValueName);
+                if (o != null)
+                {
+                    path = o as string;
+                    if (path != null) IsFound = true;
+                }
+            }
+
+            return path;
+        }
+
+        private string CheckDefaultSteamDirectoryOrNull(CancellationToken token)
+        {
+            CurrentSearchLocation = LikelyLocationsText;
+            token.ThrowIfCancellationRequested();
+
+            var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), DefaultProgramFilesSteamInstallDir);
+
+            if (Directory.Exists(basePath))
+            {
+                IsFound = true;
+                return Path.Combine(basePath, DotaConfigFolderSubPath);
+            }
+
+            basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), DefaultProgramFilesSteamInstallDir);
+
+            if (Directory.Exists(basePath))
+            {
+                IsFound = true;
+                return Path.Combine(basePath, DotaConfigFolderSubPath);
+            }
+
+            return null;
+        }
+
+        private string CheckAllDrivesForSteamLibrariesOrNull(CancellationToken token)
+        {
+            CurrentSearchLocation = LikelyLocationsText;
+
+            foreach (var driveInfo in DriveInfo.GetDrives().Where(d => d.DriveType == DriveType.Fixed))
+            {
+                token.ThrowIfCancellationRequested();
+
+                var path = Path.Combine(driveInfo.Name, DefaultSteamLibraryInstallDir);
+                
+                if (Directory.Exists(path))
+                    return path;
+            }
+
+            return null;
+        }
+
+        private string SearchAllFixedDrivesOrNull(CancellationToken token)
+        {
+            var culture = CultureInfo.InvariantCulture;
+            string combinedSubPath = Path.Combine(DotaInstallDir, DotaConfigFolderSubPath);
+
+            while (!_doneFindingDirs)
+            {
+                token.ThrowIfCancellationRequested();
+
+                string dir;
+                _dirsToSearch.TryDequeue(out dir);
+
+                if (dir != null)
+                {
+                    CurrentSearchLocation = dir;
+
+                    if (culture.CompareInfo.IndexOf(dir, combinedSubPath, CompareOptions.IgnoreCase) >= 0)
+                    {
+                        IsFound = true;
+                        return dir;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private void EnqueueDirsToSearchAsync(CancellationToken token)
+        {
+            Task.Run(() =>
+                     {
+                         foreach (var driveInfo in DriveInfo.GetDrives().Where(d => d.DriveType == DriveType.Fixed))
+                         {
+                             var rootDirs = Directory.EnumerateDirectories(driveInfo.Name);
+
+                             foreach (string dir in rootDirs)
+                             {
+                                 try
+                                 {
+                                     token.ThrowIfCancellationRequested();
+
+                                     _dirsToSearch.Enqueue(dir);
+                                     GetAllFoldersUnder(dir, token);
+                                 }
+                                 catch (UnauthorizedAccessException ex)
+                                 {
+                                     //Keep going for dirs that we do have permission to
+                                 }
+                                 catch (OperationCanceledException)
+                                 { }
+                             }
+                         }
+                     }, token)
+                .ContinueWith((t) =>
+                              {
+                                  _doneFindingDirs = true;
+                              }, token);
+        }
+
+        private void GetAllFoldersUnder(string path, CancellationToken token)
+        {
+            token.ThrowIfCancellationRequested();
+
+            try
+            {
+                foreach (string folder in Directory.GetDirectories(path))
+                {
+                    _dirsToSearch.Enqueue(folder);
+                    GetAllFoldersUnder(folder, token);
+                }
+            }
+            catch (UnauthorizedAccessException ex) { }
         }
     }
 
-    public class DirectoryLocationResult
+    internal class SearchLocation
     {
-        public enum SearchOutcome
+        public SearchLocation(string value)
         {
-            Undefined,
-            Found,
-            NotFound
+            Location = value;
         }
 
-        public DirectoryLocationResult(SearchOutcome outcome)
-        {
-            Outcome = outcome;
-            Path = "";
-        }
-
-        public DirectoryLocationResult(SearchOutcome outcome, string path)
-        {
-            Outcome = outcome;
-            Path = path;
-        }
-
-        public SearchOutcome Outcome { get; }
-        public string Path { get; }
+        public string Location { get; }
     }
 }

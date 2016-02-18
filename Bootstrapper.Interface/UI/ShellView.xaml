@@ -25,6 +25,7 @@
     <StackPanel VerticalAlignment="Center">
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8">Bootstrapper interface shell</TextBlock>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="8">Figure out how to integrate the Material Design styling...</TextBlock>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="8" x:Name="CurrentDir"></TextBlock>
         <Separator></Separator>
         <Button x:Name="Install" Margin="16">Install</Button>
         <Button x:Name="Uninstall" Margin="16">Uninstall</Button>
