@@ -22,12 +22,19 @@
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     
-    <StackPanel VerticalAlignment="Center">
+    <DockPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="16">
+            <TextBlock HorizontalAlignment="Right">Action buttons here...</TextBlock>
+        </StackPanel>
+        <controls:TransitioningContentControl x:Name="ActiveViewModel" Margin="16" />
+    </DockPanel>
+    
+    <!--<StackPanel VerticalAlignment="Center">
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8">Bootstrapper interface shell</TextBlock>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="8">Figure out how to integrate the Material Design styling...</TextBlock>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="8" x:Name="CurrentDir"></TextBlock>
         <Separator></Separator>
         <Button x:Name="Install" Margin="16">Install</Button>
         <Button x:Name="Uninstall" Margin="16">Uninstall</Button>
-    </StackPanel>
+    </StackPanel>-->
 </controls:MetroWindow>

@@ -18,6 +18,7 @@
     </UserControl.Resources>
 
     <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <TextBlock>Busy installing</TextBlock>
         <materialDesign:Card UniformCornerRadius="14" Padding="4">
             <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"                     
                      Value="35"

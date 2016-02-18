@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
+using Bootstrapper.Interface.Messages;
 using Bootstrapper.Interface.Util;
 using Caliburn.Micro;
 using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
@@ -24,7 +25,12 @@ namespace Bootstrapper.Interface.UI
         Failed,
     }
 
-    class ShellViewModel : Screen
+    class ShellViewModel : Screen,
+        IHandle<DirectorySearchMessages.SearchForDotaDirectory>,
+        IHandle<DirectorySearchMessages.DotaDirectoryFound>,
+        IHandle<DirectorySearchMessages.DotaDirectoryNotFound>,
+        IHandle<TerminationMessages.Success>,
+        IHandle<TerminationMessages.Error>
     {
         private const int ERROR_UserCancelled = 1223;
         private IntPtr hwnd;
@@ -37,9 +43,18 @@ namespace Bootstrapper.Interface.UI
         private DotaDirectoryLocator _searcher;
         private string _currentDir = "";
         private Timer _timer;
+        private PropertyChangedBase _activeViewModel;
+        private List<IScreen> _screens;
 
-        public ShellViewModel(BootstrapperApplication bootStrapper, IEventAggregator agg)
+        public ShellViewModel(BootstrapperApplication bootStrapper, IEventAggregator agg, 
+            DotaFinderViewModel finder,
+            DotaDetectedViewModel detected,
+            BusyViewModel busy,
+            ErrorViewModel error,
+            SuccessViewModel success)
         {
+            DisplayName = "Bro do you even stack? Installer";
+
             _ba = bootStrapper;
             _agg = agg;
             _agg.Subscribe(this);
@@ -65,37 +80,70 @@ namespace Bootstrapper.Interface.UI
             _ba.CacheAcquireProgress += this.CacheAcquireProgress;
             _ba.CacheComplete += this.CacheComplete;
 
-            _timer = new Timer();
-            _timer.Interval = 100;
-            _timer.Tick += (sender, args) => CurrentDir = _searcher?.CurrentSearchLocation ?? "not searching";
-            _timer.Start();
+            _screens = new List<IScreen>()
+            {
+                finder,
+                detected,
+                busy,
+                error,
+                success
+            };
+
+            _agg.PublishOnBackgroundThread(new DirectorySearchMessages.SearchForDotaDirectory());
         }
 
-        public bool CanInstall => true;
-        public bool CanUninstall => true;
-
-        public string CurrentDir
+        public PropertyChangedBase ActiveViewModel
         {
-            get { return _currentDir; }
+            get { return _activeViewModel; }
             set
             {
-                if (value == _currentDir) return;
-                _currentDir = value;
-                NotifyOfPropertyChange(() => CurrentDir);
+                if (Equals(value, _activeViewModel)) return;
+                _activeViewModel = value;
+                NotifyOfPropertyChange(() => ActiveViewModel);
             }
         }
 
+        public void Handle(DirectorySearchMessages.SearchForDotaDirectory message)
+        {
+            ActiveViewModel = _screens.OfType<DotaFinderViewModel>().First();
+        }
+
+        public void Handle(DirectorySearchMessages.DotaDirectoryFound message)
+        {
+            ActiveViewModel = _screens.OfType<DotaDetectedViewModel>().First();
+            _ba.Engine.StringVariables["DotaConfigDir"] = message.Path;
+        }
+
+        public void Handle(DirectorySearchMessages.DotaDirectoryNotFound message)
+        {
+            _agg.PublishOnBackgroundThread(new TerminationMessages.Error("Unable to locate your Dota 2 installation directory"));
+        }
+
+        public void Handle(TerminationMessages.Success message)
+        {
+            ActiveViewModel = _screens.OfType<SuccessViewModel>().First();
+        }
+
+        public void Handle(TerminationMessages.Error message)
+        {
+            ActiveViewModel = _screens.OfType<ErrorViewModel>().First();
+        }
+
+        //Todo: 
+        public bool CanInstall => true;
+        public bool CanUninstall => true;
+
         public void Install()
         {
-            //Todo: put this is its own VM.  Kick the search off immediately
-            _searcher = new DotaDirectoryLocator();
+            ////Todo: put this is its own VM.  Kick the search off immediately
+            //_searcher = new DotaDirectoryLocator();
 
-            Task.Run(() =>
-                     {
-                         DirectorySearchResult result = _searcher.SearchForDotaDirectory();
+            //Task.Run(() =>
+            //         {
+            //             DirectorySearchResult result = _searcher.SearchForDotaDirectory();
 
-                         MessageBox.Show(string.IsNullOrEmpty(result.Path) ? "not found" : result.Path);
-                     });
+            //             MessageBox.Show(string.IsNullOrEmpty(result.Path) ? "not found" : result.Path);
+            //         });
             
             //_ba.Engine.StringVariables["DotaConfigDir"] = "THE PATH TO DOTA'S CONFIG DIRECTORY";
 
@@ -105,13 +153,13 @@ namespace Bootstrapper.Interface.UI
 
         public void Uninstall()
         {
-            var dialog = new FolderBrowserDialog();
-            var result = dialog.ShowDialog();
+            //var dialog = new FolderBrowserDialog();
+            //var result = dialog.ShowDialog();
 
-            if (result == DialogResult.OK)
-            {
-                _searcher.SpecifyDirectoryManually(dialog.SelectedPath);
-            }
+            //if (result == DialogResult.OK)
+            //{
+            //    _searcher.SpecifyDirectoryManually(dialog.SelectedPath);
+            //}
 
             //this.Plan(LaunchAction.Uninstall);
         }

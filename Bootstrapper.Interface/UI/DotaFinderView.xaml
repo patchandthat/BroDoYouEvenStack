@@ -6,7 +6,12 @@
              xmlns:local="clr-namespace:Bootstrapper.Interface.UI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-            
-    </Grid>
+    <StackPanel VerticalAlignment="Center" >
+        <TextBlock HorizontalAlignment="Center">Searching for your Dota 2 installation directory...</TextBlock>
+        <TextBlock x:Name="CurrentSearchLocation"></TextBlock>
+        <DockPanel>
+            <Button DockPanel.Dock="Right" Margin="8">Pick manually...</Button>
+            <ProgressBar Height="30" IsIndeterminate="True" Margin="8"></ProgressBar>
+        </DockPanel>
+      </StackPanel>
 </UserControl>

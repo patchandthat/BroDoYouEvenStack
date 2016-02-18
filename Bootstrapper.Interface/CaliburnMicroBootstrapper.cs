@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Windows;
 using Autofac;
 using Bootstrapper.Interface.UI;
+using Bootstrapper.Interface.Util;
 using Caliburn.Micro;
 using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
 using StartupEventArgs = System.Windows.StartupEventArgs;
@@ -47,6 +48,8 @@ namespace Bootstrapper.Interface
                    .Where(t => t.Name.EndsWith("ViewModel") || t.Name.EndsWith("View"))
                    .AsSelf()
                    .InstancePerDependency();
+
+            builder.RegisterType<DotaDirectoryLocator>().AsSelf().InstancePerLifetimeScope();
         }
 
         protected override void OnStartup(object sender, StartupEventArgs e)

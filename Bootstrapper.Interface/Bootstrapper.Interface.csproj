@@ -84,21 +84,34 @@
   <ItemGroup>
     <Compile Include="BootstrapperInterfaceEntrypoint.cs" />
     <Compile Include="CaliburnMicroBootstrapper.cs" />
+    <Compile Include="Messages\DirectorySearchMessages.cs" />
+    <Compile Include="Messages\TerminationMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\BusyView.xaml.cs">
       <DependentUpon>BusyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\BusyViewModel.cs" />
+    <Compile Include="UI\DotaDetectedView.xaml.cs">
+      <DependentUpon>DotaDetectedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DotaDetectedViewModel.cs" />
     <Compile Include="UI\DotaFinderView.xaml.cs">
       <DependentUpon>DotaFinderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\DotaFinderViewModel.cs" />
+    <Compile Include="UI\ErrorView.xaml.cs">
+      <DependentUpon>ErrorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ErrorViewModel.cs" />
     <Compile Include="UI\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\ShellViewModel.cs" />
+    <Compile Include="UI\SuccessView.xaml.cs">
+      <DependentUpon>SuccessView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SuccessViewModel.cs" />
     <Compile Include="Util\DirectorySearchResult.cs" />
-    <Compile Include="Util\DirectorySearchEventArgs.cs" />
     <Compile Include="Util\DotaDirectoryLocator.cs" />
     <Compile Include="Util\SearchOutcome.cs" />
     <Compile Include="WixLog.cs" />
@@ -115,7 +128,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI\DotaDetectedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\DotaFinderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ErrorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -124,6 +145,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\ShellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SuccessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

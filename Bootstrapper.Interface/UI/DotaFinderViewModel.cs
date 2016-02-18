@@ -1,8 +1,79 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Bootstrapper.Interface.Messages;
+using Bootstrapper.Interface.Util;
+using Caliburn.Micro;
+using Screen = Caliburn.Micro.Screen;
 
 namespace Bootstrapper.Interface.UI
 {
-    class DotaFinderViewModel : Screen
+    class DotaFinderViewModel : Screen, IHandle<DirectorySearchMessages.SearchForDotaDirectory>
     {
+        private readonly IEventAggregator _agg;
+        private readonly DotaDirectoryLocator _locator;
+        private readonly System.Timers.Timer _timer;
+        private string _currentSearchLocation;
+        private DirectorySearchResult _searchResult;
+
+        public DotaFinderViewModel(IEventAggregator agg, DotaDirectoryLocator locator)
+        {
+            _agg = agg;
+            _locator = locator;
+
+            _agg.Subscribe(this);
+
+            _timer = new System.Timers.Timer();
+            _timer.AutoReset = true;
+            _timer.Interval = 100d;
+            _timer.Enabled = false;
+
+            _timer.Elapsed += TimerOnTick;
+        }
+
+        public string CurrentSearchLocation
+        {
+            get { return _currentSearchLocation; }
+            set
+            {
+                if (value == _currentSearchLocation) return;
+                _currentSearchLocation = value;
+                NotifyOfPropertyChange(() => CurrentSearchLocation);
+            }
+        }
+
+        private void TimerOnTick(object sender, EventArgs eventArgs)
+        {
+            CurrentSearchLocation = _locator.CurrentSearchLocation ?? "Tick";
+
+            if (_locator.IsFound)
+            {
+                _agg.PublishOnBackgroundThread(new DirectorySearchMessages.DotaDirectoryFound(_searchResult.Path));
+                _timer.Stop();
+                return;
+            }
+
+            if (!_locator.IsBusy)
+            {
+                _agg.PublishOnBackgroundThread(new DirectorySearchMessages.DotaDirectoryNotFound());
+                _timer.Stop();
+            }
+        }
+
+        public void Handle(DirectorySearchMessages.SearchForDotaDirectory message)
+        {
+            Task.Run(() =>
+            {
+                _searchResult = _locator.SearchForDotaDirectory();
+            });
+
+            _timer.Start();
+        }
+
+        public void SpecifyManually()
+        {
+            //Todo: Folder dialog etc, interrupt search
+
+        }
     }
 }
