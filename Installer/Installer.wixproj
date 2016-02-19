@@ -23,11 +23,8 @@
   <ItemGroup>
     <Compile Include="Fragments\Components\AppFiles.wxs" />
     <Compile Include="Fragments\Components\DotaConfigFiles.wxs" />
-    <Compile Include="Fragments\CustomActions.wxs" />
     <Compile Include="Fragments\Directories.wxs" />
     <Compile Include="Fragments\Features.wxs" />
-    <Compile Include="Fragments\InstallSequence.wxs" />
-    <Compile Include="Fragments\Properties.wxs" />
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
