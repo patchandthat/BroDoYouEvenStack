@@ -73,6 +73,18 @@
                 </Component>
             </Directory>
         </DirectoryRef>
+
+      <DirectoryRef Id="dirBroDoYouEvenStackStartMenuFolder">
+        <Component Id="ApplicationShortcut" Guid="7B1BD188-A2AE-44CE-8352-5FD4C6BBCADA">
+          <Shortcut Id="ApplicationStartMenuShortcut"
+                    Name="Bro do you even stack"
+                    Description="Audio cues for stack and rune timings"
+                    Target="[#filE1F73C6E33BA875FB9C5D448C0EC7E1E]"
+                    WorkingDirectory="BroDoYouEvenStackFolder"/>
+          <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall"/>
+          <RegistryValue Root="HKCU" Key="Software\Microsoft\MyApplicationName" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+        </Component>
+      </DirectoryRef>
     </Fragment>
     <Fragment>
         <ComponentGroup Id="AppFiles">
@@ -98,6 +110,7 @@
             <ComponentRef Id="cmp2BD6C04CF80EF0E9FF759C94F152DA1F" />
             <ComponentRef Id="cmpECFACE3E470A5CFB4192F2C26D004E21" />
             <ComponentRef Id="cmp4B6F91A9703AD665D4E45C9E54136689" />
+            <ComponentRef Id="ApplicationShortcut" />
         </ComponentGroup>
     </Fragment>
 </Wix>

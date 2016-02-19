@@ -11,9 +11,9 @@
                 <Directory Id="DotaGsiDir" Name="gamestate_integration"></Directory>
             </Directory>
 
-            <!--<Directory Id="ProgramMenuFolder">
+            <Directory Id="ProgramMenuFolder">
                 <Directory Id="dirBroDoYouEvenStackStartMenuFolder" Name="Bro do you even stack"></Directory>
-            </Directory>-->
+            </Directory>
         </Directory>
 	</Fragment>
 </Wix>
