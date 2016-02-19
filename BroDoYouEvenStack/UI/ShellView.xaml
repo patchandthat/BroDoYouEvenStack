@@ -11,9 +11,11 @@
              TextElement.Foreground="{DynamicResource MaterialDesignBody}"
              Background="{DynamicResource MaterialDesignPaper}"
              TextElement.FontWeight="Medium"
-             TextElement.FontSize="14"
+             TextElement.FontSize="16"
              FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
             >
+    <!--FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"-->
+    <!--FontFamily="Constantia"--> <!-- close approximation to the dota2 font -->
     <Grid>
         <controls:TransitioningContentControl x:Name="WindowContent" Margin="5"></controls:TransitioningContentControl>
     </Grid>
