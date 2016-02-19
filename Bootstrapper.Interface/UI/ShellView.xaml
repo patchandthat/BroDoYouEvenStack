@@ -22,7 +22,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
-    
+
     <DockPanel>
         <materialDesign:ColorZone DockPanel.Dock="Bottom" Mode="PrimaryLight" Height="80">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="16">
@@ -56,18 +56,19 @@
                         </Viewbox>
                     </StackPanel>
                 </Button>
+                <Button Margin="8" x:Name="ExitAndLaunch" Visibility="{Binding Path=CanExitAndLaunch, Converter={StaticResource BoolToVis}}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Margin="0,0,8,0">Launch application</TextBlock>
+                        <Viewbox Width="24" Height="24">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M12,10L8,14H11V20H13V14H16M19,4H5C3.89,4 3,4.9 3,6V18A2,2 0 0,0 5,20H9V18H5V8H19V18H15V20H19A2,2 0 0,0 21,18V6A2,2 0 0,0 19,4Z" Fill="Black" />
+                            </Canvas>
+                        </Viewbox>
+                    </StackPanel>
+                </Button>
             </StackPanel>
         </materialDesign:ColorZone>
-        
+
         <controls:TransitioningContentControl x:Name="ActiveViewModel" Margin="16" />
     </DockPanel>
-    
-    <!--<StackPanel VerticalAlignment="Center">
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8">Bootstrapper interface shell</TextBlock>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="8">Figure out how to integrate the Material Design styling...</TextBlock>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Margin="8" x:Name="CurrentDir"></TextBlock>
-        <Separator></Separator>
-        <Button x:Name="Install" Margin="16">Install</Button>
-        <Button x:Name="Uninstall" Margin="16">Uninstall</Button>
-    </StackPanel>-->
 </controls:MetroWindow>

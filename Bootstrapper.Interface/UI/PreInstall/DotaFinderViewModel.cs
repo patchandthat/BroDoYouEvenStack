@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Bootstrapper.Interface.Messages;
@@ -44,19 +45,22 @@ namespace Bootstrapper.Interface.UI
 
         private void TimerOnTick(object sender, EventArgs eventArgs)
         {
-            CurrentSearchLocation = _locator.CurrentSearchLocation ?? "Tick";
+            CurrentSearchLocation = _locator.CurrentSearchLocation ?? "";
 
-            if (_locator.IsFound)
+            if (_locator.HasStarted)
             {
-                _agg.PublishOnBackgroundThread(new DirectorySearchMessages.DotaDirectoryFound(_searchResult.Path));
-                _timer.Stop();
-                return;
-            }
+                if (_locator.IsFound)
+                {
+                    _agg.PublishOnBackgroundThread(new DirectorySearchMessages.DotaDirectoryFound(_searchResult.Path));
+                    _timer.Stop();
+                    return;
+                }
 
-            if (!_locator.IsBusy)
-            {
-                _agg.PublishOnBackgroundThread(new DirectorySearchMessages.DotaDirectoryNotFound());
-                _timer.Stop();
+                if (!_locator.IsBusy)
+                {
+                    _agg.PublishOnBackgroundThread(new DirectorySearchMessages.DotaDirectoryNotFound());
+                    _timer.Stop();
+                }
             }
         }
 
@@ -64,6 +68,10 @@ namespace Bootstrapper.Interface.UI
         {
             Task.Run(() =>
             {
+                //Put an artifical delay in here, as in most cases it's going to almost instantly finish and just flicker up that viewmodel
+                var t = Task.Delay(2500);
+                t.Wait(2000);
+
                 _searchResult = _locator.SearchForDotaDirectory();
             });
 

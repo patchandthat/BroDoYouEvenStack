@@ -33,6 +33,7 @@ namespace Bootstrapper.Interface.Util
             IsBusy = false;
             CurrentSearchLocation = "";
             IsFound = false;
+            HasStarted = false;
 
             _cts = new CancellationTokenSource();
         }
@@ -63,6 +64,7 @@ namespace Bootstrapper.Interface.Util
         }
 
         public string UserPath { get; private set; }
+        public bool HasStarted { get; private set; }
 
         public DirectorySearchResult SearchForDotaDirectory()
         {
@@ -72,6 +74,7 @@ namespace Bootstrapper.Interface.Util
                                       {
                                           try
                                           {
+                                              HasStarted = true;
                                               IsBusy = true;
                                               return PerformSearch(_cts.Token);
                                           }

@@ -6,7 +6,7 @@
 	<Product Id="*" 
              Name="Bro Do You Even Stack Installer" 
              Language="1033" 
-             Version="0.1.0.0" 
+             Version="!(bind.FileVersion.filE1F73C6E33BA875FB9C5D448C0EC7E1E)" 
              Manufacturer="Patrick Allwood" 
              UpgradeCode="{7F53544D-E1F2-4967-BBC9-3C777F91DD4A}">
 		

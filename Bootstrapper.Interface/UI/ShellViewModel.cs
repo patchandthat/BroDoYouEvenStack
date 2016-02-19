@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
@@ -10,6 +11,7 @@ using Bootstrapper.Interface.Util;
 using Caliburn.Micro;
 using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
 using Application = System.Windows.Application;
+using ErrorEventArgs = Microsoft.Tools.WindowsInstallerXml.Bootstrapper.ErrorEventArgs;
 using MessageBox = System.Windows.MessageBox;
 using Screen = Caliburn.Micro.Screen;
 
@@ -108,6 +110,7 @@ namespace Bootstrapper.Interface.UI
         public void Handle(DirectorySearchMessages.SearchForDotaDirectory message)
         {
             ActiveViewModel = _screens.OfType<DotaFinderViewModel>().First();
+            NotifyStateChanged();
         }
 
         public void Handle(DirectorySearchMessages.DotaDirectoryFound message)
@@ -116,11 +119,13 @@ namespace Bootstrapper.Interface.UI
             _ba.Engine.StringVariables["DotaConfigDir"] = message.Path;
 
             ActiveViewModel = _screens.OfType<DotaDetectedViewModel>().First();
+            NotifyStateChanged();
         }
 
         public void Handle(DirectorySearchMessages.DotaDirectoryNotFound message)
         {
             _agg.PublishOnBackgroundThread(new TerminationMessages.Error("Unable to locate your Dota 2 installation directory"));
+            NotifyStateChanged();
         }
 
         public void Handle(TerminationMessages.Success message)
@@ -128,16 +133,32 @@ namespace Bootstrapper.Interface.UI
             ActiveViewModel = _plannedAction == LaunchAction.Install
                 ? (PropertyChangedBase)_screens.OfType<InstallSuccessViewModel>().First()
                 : (PropertyChangedBase)_screens.OfType<UninstallSuccessViewModel>().First();
+            NotifyStateChanged();
         }
 
         public void Handle(TerminationMessages.Error message)
         {
             ActiveViewModel = _screens.OfType<ErrorViewModel>().First();
+            NotifyStateChanged();
         }
 
         public bool CanInstall => State == InstallationState.DetectedAbsent && _dotaDirectoryKnown;
         public bool CanUninstall => State == InstallationState.DetectedPresent;
-        public bool CanUpdate => State == InstallationState.DetectedPresent;
+        public bool CanUpdate => State == InstallationState.DetectedPresent && _dotaDirectoryKnown;
+        public bool CanExitAndLaunch => State == InstallationState.Applied && _plannedAction == LaunchAction.Install;
+
+        private void NotifyStateChanged()
+        {
+            NotifyOfPropertyChange(() => State);
+            NotifyOfPropertyChange(() => ProgressEnabled);
+
+            NotifyOfPropertyChange(() => CompleteEnabled);
+            NotifyOfPropertyChange(() => CanInstall);
+            NotifyOfPropertyChange(() => CanUninstall);
+            NotifyOfPropertyChange(() => CanUpdate);
+            NotifyOfPropertyChange(() => CanExitAndLaunch);
+            NotifyOfPropertyChange(() => CanExit);
+        }
 
         public void Install()
         {
@@ -161,6 +182,18 @@ namespace Bootstrapper.Interface.UI
             Plan(LaunchAction.UpdateReplace);
         }
 
+        public void ExitAndLaunch()
+        {
+            string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+                "BroDoYouEvenStack\\BroDoyouevenStack.exe");
+            if (File.Exists(path))
+            {
+                System.Diagnostics.Process.Start(path);
+            }
+
+            this.TryClose();
+        }
+
         #region Engine Events
 
         protected override void OnInitialize()
@@ -181,18 +214,6 @@ namespace Bootstrapper.Interface.UI
                 _state = value;
                 NotifyStateChanged();
             }
-        }
-
-        private void NotifyStateChanged()
-        {
-            NotifyOfPropertyChange(() => State);
-            NotifyOfPropertyChange(() => ProgressEnabled);
-
-            NotifyOfPropertyChange(() => CompleteEnabled);
-            NotifyOfPropertyChange(() => CanInstall);
-            NotifyOfPropertyChange(() => CanUninstall);
-            NotifyOfPropertyChange(() => CanUpdate);
-            NotifyOfPropertyChange(() => CanExit);
         }
 
         public bool CanExit { get { return !this.ProgressEnabled; } }
@@ -254,6 +275,7 @@ namespace Bootstrapper.Interface.UI
                 _ba.Engine.Log(LogLevel.Verbose, "Invoking automatic plan for uninstall");
                 Execute.OnUIThread(() =>
                 {
+                    _plannedAction = LaunchAction.Uninstall;
                     this.Plan(LaunchAction.Uninstall);
                 });
             }
