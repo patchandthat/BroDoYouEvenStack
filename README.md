@@ -1,4 +1,4 @@
-# BroDoYouEvenStack 
+# Bro Do You Even Stack ?
 
 [![Build status](https://ci.appveyor.com/api/projects/status/m9mn0gnmqa42ge3k?svg=true)](https://ci.appveyor.com/project/patchandthat/brodoyouevenstack) 
 
@@ -13,7 +13,9 @@ You can download the latest version [here.](https://ci.appveyor.com/api/projects
 Port 4000 is used by default to listen for dota's game state. If you need to use a different port, edit the config files in:
 
 1. *\<Dota2 install folder\>*\Game\Dota\Cfg\gamestate_integration\gamestate_integration_stack.cfg
-2. C:\Users\\*\<username\>*\AppData\Roaming\BroDoYouEvenStack\bdyes.config *this file gets created after you've run the app and changed some settings.*
+2. C:\Users\\*\<username\>*\AppData\Roaming\BroDoYouEvenStack\bdyes.config 
+
+The second file only gets created after you've run the app and changed some settings.
 
 ## Issues & contributions
 Issues and feature requests, [feel free](https://github.com/patchandthat/BroDoYouEvenStack/issues). Or do it yourself and send me a pull request.
