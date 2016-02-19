@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Diagnostics;
+using Caliburn.Micro;
 using Dota2GSI;
 
 namespace BroDoYouEvenStack.UI.Running.Displays
@@ -35,6 +36,11 @@ namespace BroDoYouEvenStack.UI.Running.Displays
         public void Handle(GameState message)
         {
             Greeting = $"Hello {message.Player.Name}";
+        }
+
+        public void GithubButton()
+        {
+            Process.Start(@"https://github.com/patchandthat/BroDoYouEvenStack");
         }
     }
 }

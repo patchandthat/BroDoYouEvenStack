@@ -10,7 +10,7 @@
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">Just join a game and your timers will run automatically</TextBlock>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">If you like using this app, give it a star on</TextBlock>
-            <Button Margin="8,0,0,0" Style="{StaticResource MaterialDesignFlatButton}">
+            <Button Style="{StaticResource MaterialDesignFlatButton}" x:Name="GithubButton">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Margin="0,0,8,0">Github</TextBlock>
                     <Viewbox Width="24" Height="24">

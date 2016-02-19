@@ -14,10 +14,27 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal"  Margin="16,0">
-                <Label VerticalAlignment="Bottom" Margin="16,0,0,0">Remind me to get runes</Label>
-                <!--<ToggleButton Content="R" Margin="4,4,4,4" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="MaterialDesignActionToggleButton"/>-->
+                <TextBlock VerticalAlignment="Bottom" Margin="16,0,0,0">Remind me to get runes</TextBlock>
                 <ToggleButton x:Name="RuneToggle" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Bottom" Margin="27,0,0,0" />
-                <!-- todo Sound file override --> 
+                
+                <StackPanel Orientation="Horizontal" Margin="64,0,0,0">
+                    <TextBlock VerticalAlignment="Bottom">Volume</TextBlock>
+                    <Viewbox Width="24" Height="24" VerticalAlignment="Bottom">
+                        <Canvas Width="24" Height="24" VerticalAlignment="Bottom">
+                            <Path Data="M7,9V15H11L16,20V4L11,9H7Z" Fill="Black" />
+                        </Canvas>
+                    </Viewbox>
+                    <Slider x:Name="RuneWarningVolume" VerticalAlignment="Center" Minimum="0" Maximum="100" Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                    Value="0"
+                    Width="200" 
+                    Margin="16,0,16,0"/>
+                    <Viewbox Width="24" Height="24" VerticalAlignment="Bottom">
+                        <Canvas Width="24" Height="24" VerticalAlignment="Bottom">
+                            <Path Data="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" Fill="Black" />
+                        </Canvas>
+                    </Viewbox>
+                </StackPanel>
+                
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="16,0">
                 <TextBlock Text="{Binding ElementName=RuneSecondsWarning, Path=Value, StringFormat=Give me 00 seconds warning}" Margin="16,0,0,0" VerticalAlignment="Bottom" />
@@ -40,10 +57,26 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0" Orientation="Horizontal"  Margin="16,36,16,0">
-                <Label VerticalAlignment="Bottom" Margin="16,0,0,0">Remind me to stack creeps</Label>
-                <!--<ToggleButton Content="R" Margin="4,4,4,4" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="MaterialDesignActionToggleButton"/>-->
+                <TextBlock VerticalAlignment="Bottom" Margin="16,0,0,0">Remind me to stack creeps</TextBlock>
                 <ToggleButton x:Name="CreepToggle" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Bottom" Margin="8,0,0,0" />
                 <!-- todo Sound file override -->
+                <StackPanel Orientation="Horizontal" Margin="64,0,0,0">
+                    <TextBlock VerticalAlignment="Bottom">Volume</TextBlock>
+                    <Viewbox Width="24" Height="24" VerticalAlignment="Bottom">
+                        <Canvas Width="24" Height="24">
+                            <Path Data="M7,9V15H11L16,20V4L11,9H7Z" Fill="Black" />
+                        </Canvas>
+                    </Viewbox>
+                    <Slider x:Name="CreepWarningVolume" VerticalAlignment="Center" Minimum="0" Maximum="100" Style="{StaticResource MaterialDesignDiscreteSlider}" 
+                    Value="0"
+                    Width="200" 
+                    Margin="16,0,16,0"/>
+                    <Viewbox Width="24" Height="24" VerticalAlignment="Bottom">
+                        <Canvas Width="24" Height="24">
+                            <Path Data="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" Fill="Black" />
+                        </Canvas>
+                    </Viewbox>
+                </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="16,0">
                 <TextBlock Text="{Binding ElementName=CreepSecondsWarning, Path=Value, StringFormat=Give me 00 seconds warning}" Margin="16,0,0,0" VerticalAlignment="Bottom" />

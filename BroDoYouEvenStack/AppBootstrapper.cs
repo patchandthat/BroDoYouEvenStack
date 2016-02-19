@@ -51,7 +51,7 @@ namespace BroDoYouEvenStack
             {
                 {"SizeToContent", SizeToContent.Manual},
                 {"Width", 1000},
-                {"Height", 500},
+                {"Height", 575},
             };
 
             DisplayRootViewFor<ShellViewModel>(settings);

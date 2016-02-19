@@ -1,7 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Media;
+using System.Reflection;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using BroDoYouEvenStack.Messages;
+using BroDoYouEvenStack.UI.Running.Configuration;
 using BroDoYouEvenStack.Util;
 using Caliburn.Micro;
 using Dota2GSI;
@@ -24,6 +28,16 @@ namespace BroDoYouEvenStack.UI.Running.Displays
         //Todo: allow user to override with less obnoxious sounds
         private const string DefaultRuneAlarmPath = "Resources\\horn.wav";
         private const string DefaultCreepAlarmPath = "Resources\\clown.wav";
+        public string AssemblyDirectory
+        {
+            get
+            {
+                string codeBase = Assembly.GetExecutingAssembly().CodeBase;
+                UriBuilder uri = new UriBuilder(codeBase);
+                string path = Uri.UnescapeDataString(uri.Path);
+                return Path.GetDirectoryName(path);
+            }
+        }
 
         private WarningEvaluator _runeWarning;
         private WarningEvaluator _creepWarning;
@@ -122,7 +136,7 @@ namespace BroDoYouEvenStack.UI.Running.Displays
             if (!RunesMuted && !_debounceRuneAlarm && !_dead)
             {
                 _debounceRuneAlarm = true;
-                PlaySound(DefaultRuneAlarmPath);
+                PlaySound(Path.Combine(AssemblyDirectory, DefaultRuneAlarmPath), _config.RuneWarningVolume);
 
                 Task.Run(async () =>
                 {
@@ -137,7 +151,7 @@ namespace BroDoYouEvenStack.UI.Running.Displays
             if (!CreepsMuted && !_debounceCreepAlarm && !_dead)
             {
                 _debounceCreepAlarm = true;
-                PlaySound(DefaultCreepAlarmPath);
+                PlaySound(Path.Combine(AssemblyDirectory, DefaultCreepAlarmPath), _config.CreepWarningVolume);
 
                 Task.Run(async () =>
                 {
@@ -146,17 +160,19 @@ namespace BroDoYouEvenStack.UI.Running.Displays
                 });
             }
         }
-
-        private void PlaySound(string filePath)
+        
+        private void PlaySound(string filePath, double volume)
         {
             try
             {
-                using (var player = new SoundPlayer(filePath))
-                {
-                    player.Play();
-                }
+                var player = new MediaPlayer();
+                player.Open(new Uri(filePath));
+
+                player.Volume = volume;
+
+                player.Play();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //Todo:
                 //UriformatException

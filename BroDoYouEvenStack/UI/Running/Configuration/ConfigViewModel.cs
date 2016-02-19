@@ -26,7 +26,10 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
 
         private readonly string _appDataDir =
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BroDoYouEvenStack");
-        
+
+        private int _creepWarningVolume;
+        private int _runeWarningVolume;
+
         public ConfigViewModel(IEventAggregator agg)
         {
             _agg = agg;
@@ -119,6 +122,30 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
             }
         }
 
+        public int RuneWarningVolume
+        {
+            get { return _runeWarningVolume; }
+            set
+            {
+                if (value == _runeWarningVolume) return;
+                _runeWarningVolume = value;
+                NotifyOfPropertyChange(() => RuneWarningVolume);
+                ConfigChanged();
+            }
+        }
+
+        public int CreepWarningVolume
+        {
+            get { return _creepWarningVolume; }
+            set
+            {
+                if (value == _creepWarningVolume) return;
+                _creepWarningVolume = value;
+                NotifyOfPropertyChange(() => CreepWarningVolume);
+                ConfigChanged();
+            }
+        }
+
         private void ConfigChanged()
         {
             var config = GetConfigObject();
@@ -139,7 +166,9 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
                 _creepSecondsWarning,
                 _runeStopWarningAfterMinutes,
                 _creepStopWarningAfterMinutes,
-                _gsiPort);
+                _gsiPort, 
+                _runeWarningVolume / 100.0d,
+                _creepWarningVolume / 100.0d);
             return config;
         }
 
@@ -179,6 +208,9 @@ namespace BroDoYouEvenStack.UI.Running.Configuration
                 RuneToggle = settings.RuneToggle;
                 RuneSecondsWarning = settings.RuneSecondsWarning;
                 RuneStopWarningAfterMinutes = settings.RuneStopWarningAfterMinutes;
+
+                RuneWarningVolume = (int)(settings.RuneWarningVolume * 100);
+                CreepWarningVolume = (int)(settings.CreepWarningVolume * 100);
 
                 _gsiPort = settings.GameStateIntegrationPort;
             }

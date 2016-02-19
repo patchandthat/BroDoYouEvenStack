@@ -1,4 +1,5 @@
 ﻿using BroDoYouEvenStack.UI.Running;
+using BroDoYouEvenStack.UI.Running.Configuration;
 
 namespace BroDoYouEvenStack.Messages
 {
