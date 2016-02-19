@@ -22,3 +22,6 @@ Issues and feature requests, [feel free](https://github.com/patchandthat/BroDoYo
 
 ## Will I get VAC banned for this?
 Nope.  That config file makes Dota publish the data that this app uses.  There's nothing shady going on.
+
+## Acknowledgements
+Props to [antonpup](https://github.com/antonpup/Dota2GSI) for the Game State Integration module, and [ButchersBoy](https://github.com/ButchersBoy/MaterialDesignInXamlToolkit) for the lovely UI framework.
