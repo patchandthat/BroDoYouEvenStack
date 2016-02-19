@@ -72,8 +72,18 @@ namespace Bootstrapper.Interface.UI
 
         public void SpecifyManually()
         {
-            //Todo: Folder dialog etc, interrupt search
+            var dialog = new FolderBrowserDialog();
+            var result = dialog.ShowDialog();
 
+            if (result == DialogResult.OK)
+            {
+                bool correctFolder = _locator.SpecifyDirectoryManually(dialog.SelectedPath);
+
+                if (!correctFolder)
+                {
+                    MessageBox.Show("That is the wrong directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
     }
 }

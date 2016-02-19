@@ -34,6 +34,8 @@ namespace BroDoYouEvenStack.UI
             _timer = new Timer(INTERVAL);
             _timer.Elapsed += (sender, args) => Detect();
             _timer.AutoReset = true;
+
+            agg.PublishOnBackgroundThread(new FirstLoad());
         }
 
         /// <summary>

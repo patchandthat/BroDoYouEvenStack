@@ -3,12 +3,12 @@ using Caliburn.Micro;
 
 namespace Bootstrapper.Interface.UI
 {
-    class SuccessViewModel : Screen, IHandle<TerminationMessages.Success>
+    class InstallSuccessViewModel : Screen, IHandle<TerminationMessages.Success>
     {
         private readonly IEventAggregator _agg;
         private string _successMessage;
 
-        public SuccessViewModel(IEventAggregator agg)
+        public InstallSuccessViewModel(IEventAggregator agg)
         {
             _agg = agg;
             _agg.Subscribe(this);

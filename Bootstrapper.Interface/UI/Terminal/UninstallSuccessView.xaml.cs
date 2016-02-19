@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Bootstrapper.Interface.UI
+namespace Bootstrapper.Interface.UI.Terminal
 {
     /// <summary>
-    /// Interaction logic for SuccessView.xaml
+    /// Interaction logic for UninstallSuccessView.xaml
     /// </summary>
-    public partial class SuccessView : UserControl
+    public partial class UninstallSuccessView : UserControl
     {
-        public SuccessView()
+        public UninstallSuccessView()
         {
             InitializeComponent();
         }

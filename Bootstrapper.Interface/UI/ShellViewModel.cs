@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
 using Bootstrapper.Interface.Messages;
+using Bootstrapper.Interface.UI.Terminal;
 using Bootstrapper.Interface.Util;
 using Caliburn.Micro;
 using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
@@ -35,23 +36,23 @@ namespace Bootstrapper.Interface.UI
         private const int ERROR_UserCancelled = 1223;
         private IntPtr hwnd;
         private Dictionary<string, int> downloadRetries = new Dictionary<string, int>();
-        private LaunchAction plannedAction;
+        private LaunchAction _plannedAction;
         private InstallationState _state;
 
         private readonly BootstrapperApplication _ba;
         private readonly IEventAggregator _agg;
-        private DotaDirectoryLocator _searcher;
-        private string _currentDir = "";
-        private Timer _timer;
         private PropertyChangedBase _activeViewModel;
-        private List<IScreen> _screens;
+        private readonly List<IScreen> _screens;
+
+        private bool _dotaDirectoryKnown = false;
 
         public ShellViewModel(BootstrapperApplication bootStrapper, IEventAggregator agg, 
             DotaFinderViewModel finder,
             DotaDetectedViewModel detected,
             BusyViewModel busy,
             ErrorViewModel error,
-            SuccessViewModel success)
+            InstallSuccessViewModel installSuccess,
+            UninstallSuccessViewModel uninstallSuccess)
         {
             DisplayName = "Bro do you even stack? Installer";
 
@@ -86,7 +87,8 @@ namespace Bootstrapper.Interface.UI
                 detected,
                 busy,
                 error,
-                success
+                installSuccess,
+                uninstallSuccess
             };
 
             _agg.PublishOnBackgroundThread(new DirectorySearchMessages.SearchForDotaDirectory());
@@ -110,8 +112,10 @@ namespace Bootstrapper.Interface.UI
 
         public void Handle(DirectorySearchMessages.DotaDirectoryFound message)
         {
-            ActiveViewModel = _screens.OfType<DotaDetectedViewModel>().First();
+            _dotaDirectoryKnown = true;
             _ba.Engine.StringVariables["DotaConfigDir"] = message.Path;
+
+            ActiveViewModel = _screens.OfType<DotaDetectedViewModel>().First();
         }
 
         public void Handle(DirectorySearchMessages.DotaDirectoryNotFound message)
@@ -121,7 +125,9 @@ namespace Bootstrapper.Interface.UI
 
         public void Handle(TerminationMessages.Success message)
         {
-            ActiveViewModel = _screens.OfType<SuccessViewModel>().First();
+            ActiveViewModel = _plannedAction == LaunchAction.Install
+                ? (PropertyChangedBase)_screens.OfType<InstallSuccessViewModel>().First()
+                : (PropertyChangedBase)_screens.OfType<UninstallSuccessViewModel>().First();
         }
 
         public void Handle(TerminationMessages.Error message)
@@ -129,39 +135,30 @@ namespace Bootstrapper.Interface.UI
             ActiveViewModel = _screens.OfType<ErrorViewModel>().First();
         }
 
-        //Todo: 
-        public bool CanInstall => true;
-        public bool CanUninstall => true;
+        public bool CanInstall => State == InstallationState.DetectedAbsent && _dotaDirectoryKnown;
+        public bool CanUninstall => State == InstallationState.DetectedPresent;
+        public bool CanUpdate => State == InstallationState.DetectedPresent;
 
         public void Install()
         {
-            ////Todo: put this is its own VM.  Kick the search off immediately
-            //_searcher = new DotaDirectoryLocator();
+            ActiveViewModel = _screens.OfType<BusyViewModel>().First();
+            _plannedAction = LaunchAction.Install;
+            _ba.Engine.Plan(LaunchAction.Install);
 
-            //Task.Run(() =>
-            //         {
-            //             DirectorySearchResult result = _searcher.SearchForDotaDirectory();
-
-            //             MessageBox.Show(string.IsNullOrEmpty(result.Path) ? "not found" : result.Path);
-            //         });
-            
-            //_ba.Engine.StringVariables["DotaConfigDir"] = "THE PATH TO DOTA'S CONFIG DIRECTORY";
-
-            ////IsBusy = true;
-            //_ba.Engine.Plan(LaunchAction.Install);
         }
 
         public void Uninstall()
         {
-            //var dialog = new FolderBrowserDialog();
-            //var result = dialog.ShowDialog();
+            ActiveViewModel = _screens.OfType<BusyViewModel>().First();
+            _plannedAction = LaunchAction.Uninstall;
+            this.Plan(LaunchAction.Uninstall);
+        }
 
-            //if (result == DialogResult.OK)
-            //{
-            //    _searcher.SpecifyDirectoryManually(dialog.SelectedPath);
-            //}
-
-            //this.Plan(LaunchAction.Uninstall);
+        public void Update()
+        {
+            ActiveViewModel = _screens.OfType<BusyViewModel>().First();
+            _plannedAction = LaunchAction.Install;
+            Plan(LaunchAction.UpdateReplace);
         }
 
         #region Engine Events
@@ -194,6 +191,7 @@ namespace Bootstrapper.Interface.UI
             NotifyOfPropertyChange(() => CompleteEnabled);
             NotifyOfPropertyChange(() => CanInstall);
             NotifyOfPropertyChange(() => CanUninstall);
+            NotifyOfPropertyChange(() => CanUpdate);
             NotifyOfPropertyChange(() => CanExit);
         }
 
@@ -215,7 +213,7 @@ namespace Bootstrapper.Interface.UI
 
         private void Plan(LaunchAction action)
         {
-            this.plannedAction = action;
+            this._plannedAction = action;
             this.hwnd = (Application.Current.MainWindow == null) ? IntPtr.Zero : new WindowInteropHelper(Application.Current.MainWindow).Handle;
 
             this.Cancelled = false;
@@ -235,7 +233,7 @@ namespace Bootstrapper.Interface.UI
         private void DetectedPackage(object sender, DetectPackageCompleteEventArgs e)
         {
             // The Package ID from the Bootstrapper chain.
-            if (e.PackageId.Equals("Bro Do You Even Stack Installer", StringComparison.Ordinal))
+            if (e.PackageId.Equals("bdyesInstaller", StringComparison.Ordinal))
             {
                 this.State = (e.State == PackageState.Present) ? InstallationState.DetectedPresent : InstallationState.DetectedAbsent;
             }
@@ -287,7 +285,7 @@ namespace Bootstrapper.Interface.UI
         {
             // Turns off .NET install when setting up the install plan as we already have it.
             //if (e.PackageId.Equals(_ba.Engine.StringVariables["WixMbaPrereqPackageId"], StringComparison.Ordinal))
-            if (e.PackageId.Equals("NetFx45Web", StringComparison.Ordinal))
+            if (e.PackageId.Equals("NetFx46Web", StringComparison.Ordinal))
             {
                 e.State = RequestState.None;
             }
@@ -314,17 +312,21 @@ namespace Bootstrapper.Interface.UI
 
         private void ApplyComplete(object sender, ApplyCompleteEventArgs e)
         {
-            // Phil. Change to code 22/1/2016.
-            // I have reversed the order of this code to firstly set the state to the correct completed state (applied or failed)
-            // and then secondly decided if we should automatcially close it. This is because TryClose appears to fail as 
-            // it thinks the install has not completed.
-
 
             // Set the state to applied or failed unless the state has already been set back to the preapply state
             // which means we need to show the UI as it was before the apply started.
             if (this.State != this.PreApplyState)
             {
                 this.State = HResultSucceeded(e.Status) ? InstallationState.Applied : InstallationState.Failed;
+
+                if (State == InstallationState.Applied)
+                {
+                    _agg.PublishOnBackgroundThread(new TerminationMessages.Success("Installed successfully. GLHF."));
+                }
+                else
+                {
+                    _agg.PublishOnBackgroundThread(new TerminationMessages.Error("Installation failed. No changes have been made to your computer."));
+                }
             }
 
             // If we're not in Full UI mode, we need to alert the dispatcher to stop and close the window for passive.

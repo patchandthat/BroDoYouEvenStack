@@ -48,6 +48,7 @@
         <SolidColorBrush x:Key="IdealForegroundDisabledBrush" Color="{DynamicResource Primary500}" Opacity="0.4"/>
 
     <!--</ResourceDictionary>-->
+    <BooleanToVisibilityConverter x:Key="BoolToVis" />
 
 </ResourceDictionary>
 

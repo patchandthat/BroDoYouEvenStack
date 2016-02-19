@@ -9,7 +9,6 @@
                 <File Id="file.gsi.ConfigFile" KeyPath="yes" Source="$(var.ResourcesSource)\gamestate_integration_stack.cfg" />
             </Component>
         </DirectoryRef>
-    <!-- Stash the path in the registry so that the bootstrapper of later versions can retrieve it.  This is much nicer for uninstallation, and we're running with admin here. -->
     <Component Directory="DOTA_CONFIG_DIR" Id="ConfigDirRegKey" >
       <RegistryValue Root='HKLM' Key='SOFTWARE\BroDoYouEvenStack'
          Name='DotaConfigDir' Value='[DOTA_CONFIG_DIR]'
