@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel VerticalAlignment="Center">
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">{nickname} Your game is loading...</TextBlock>
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">{hero &amp; profile data if available...}</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="Greeting"></TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="FlavourText" Margin="0,16"></TextBlock>
     </StackPanel>
 </UserControl>

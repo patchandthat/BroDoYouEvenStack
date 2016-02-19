@@ -5,21 +5,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BroDoYouEvenStack.UI.Running"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="600">
-    <StackPanel>
+             d:DesignHeight="250" d:DesignWidth="950">
+    <StackPanel HorizontalAlignment="Center">
         <!-- Rune timers -->
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal"  Margin="16,0,0,0">
+            <StackPanel Grid.Row="0" Orientation="Horizontal"  Margin="16,0">
                 <Label VerticalAlignment="Bottom" Margin="16,0,0,0">Remind me to get runes</Label>
                 <!--<ToggleButton Content="R" Margin="4,4,4,4" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="MaterialDesignActionToggleButton"/>-->
                 <ToggleButton x:Name="RuneToggle" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Bottom" Margin="27,0,0,0" />
                 <!-- todo Sound file override --> 
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="16,0,0,0">
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="16,0">
                 <TextBlock Text="{Binding ElementName=RuneSecondsWarning, Path=Value, StringFormat=Give me 00 seconds warning}" Margin="16,0,0,0" VerticalAlignment="Bottom" />
                 <Slider x:Name="RuneSecondsWarning" VerticalAlignment="Center" Minimum="0" Maximum="60" Style="{StaticResource MaterialDesignDiscreteSlider}" 
                     Value="25"
@@ -39,13 +39,13 @@
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Horizontal"  Margin="16,36,0,0">
+            <StackPanel Grid.Row="0" Orientation="Horizontal"  Margin="16,36,16,0">
                 <Label VerticalAlignment="Bottom" Margin="16,0,0,0">Remind me to stack creeps</Label>
                 <!--<ToggleButton Content="R" Margin="4,4,4,4" Style="{StaticResource MaterialDesignActionToggleButton}" ToolTip="MaterialDesignActionToggleButton"/>-->
                 <ToggleButton x:Name="CreepToggle" Style="{StaticResource MaterialDesignSwitchToggleButton}" VerticalAlignment="Bottom" Margin="8,0,0,0" />
                 <!-- todo Sound file override -->
             </StackPanel>
-            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="16,0,0,0">
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="16,0">
                 <TextBlock Text="{Binding ElementName=CreepSecondsWarning, Path=Value, StringFormat=Give me 00 seconds warning}" Margin="16,0,0,0" VerticalAlignment="Bottom" />
                 <Slider x:Name="CreepSecondsWarning" VerticalAlignment="Center" Minimum="0" Maximum="60" Style="{StaticResource MaterialDesignDiscreteSlider}" 
                     Value="25"
@@ -57,13 +57,6 @@
                     Width="200" 
                     Margin="8,0,0,0"/>
             </StackPanel>
-        </Grid>
-
-        <!-- Misc 
-            Mute sounds while I'm dead {y/n}
-        -->
-        <Grid>
-
         </Grid>
     </StackPanel>
 </UserControl>

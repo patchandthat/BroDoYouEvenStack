@@ -22,13 +22,14 @@ namespace Dota2GSI.Nodes
         Undefined,
         None,
         Dire,
-        Radiant
+        Radiant,
+        Spectator
     }
     
     public class Map : Node
     {
         public readonly string Name;
-        public readonly int MatchID;
+        public readonly ulong MatchID;
         public readonly int GameTime;
         public readonly int ClockTime;
         public readonly bool IsDaytime;
@@ -41,7 +42,7 @@ namespace Dota2GSI.Nodes
         internal Map(string json_data) : base(json_data)
         {
             Name = GetString("name");
-            MatchID = GetInt("matchid");
+            MatchID = GetLong("matchid");
             GameTime = GetInt("game_time");
             ClockTime = GetInt("clock_time");
             IsDaytime = GetBool("daytime");

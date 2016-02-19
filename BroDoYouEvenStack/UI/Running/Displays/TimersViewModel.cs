@@ -39,6 +39,7 @@ namespace BroDoYouEvenStack.UI.Running.Displays
         //todo: interlock
         private bool _debounceRuneAlarm;
         private bool _debounceCreepAlarm;
+        private bool _dead;
 
         /// <summary>
         /// Handles the message.
@@ -63,6 +64,7 @@ namespace BroDoYouEvenStack.UI.Running.Displays
         public void Handle(GameState message)
         {
             int clocktime = message.Map.ClockTime;
+            _dead = !message.Hero.IsAlive;
 
             //Todo: this will be wrong for games over 60 mins
             int positiveTime = Math.Abs(clocktime);
@@ -117,7 +119,7 @@ namespace BroDoYouEvenStack.UI.Running.Displays
 
         private void PlayRuneAlarmIfNotMuted()
         {
-            if (!RunesMuted && !_debounceRuneAlarm)
+            if (!RunesMuted && !_debounceRuneAlarm && !_dead)
             {
                 _debounceRuneAlarm = true;
                 PlaySound(DefaultRuneAlarmPath);
@@ -127,13 +129,12 @@ namespace BroDoYouEvenStack.UI.Running.Displays
                     await Task.Delay(950);
                     _debounceRuneAlarm = false;
                 });
-
             }
         }
 
         private void PlayCreepWarningIfNotMuted()
         {
-            if (!CreepsMuted && !_debounceCreepAlarm)
+            if (!CreepsMuted && !_debounceCreepAlarm && !_dead)
             {
                 _debounceCreepAlarm = true;
                 PlaySound(DefaultCreepAlarmPath);

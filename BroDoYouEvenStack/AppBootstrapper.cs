@@ -50,7 +50,7 @@ namespace BroDoYouEvenStack
             var settings = new Dictionary<string, object>
             {
                 {"SizeToContent", SizeToContent.Manual},
-                {"Width", 900},
+                {"Width", 1000},
                 {"Height", 500},
             };
 
