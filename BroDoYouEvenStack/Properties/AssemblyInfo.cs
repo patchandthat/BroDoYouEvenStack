@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BroDoYouEvenStack")]
+[assembly: AssemblyTitle("Bro Do You Even Stack?")]
 [assembly: AssemblyDescription("Audio cues for Dota2 stack and rune timings")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Patrick Allwood")]
-[assembly: AssemblyProduct("BroDoYouEvenStack")]
+[assembly: AssemblyProduct("Bro Do You Even Stack?")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
