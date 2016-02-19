@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -188,7 +189,12 @@ namespace Bootstrapper.Interface.UI
                 "BroDoYouEvenStack\\BroDoyouevenStack.exe");
             if (File.Exists(path))
             {
-                System.Diagnostics.Process.Start(path);
+                var info = new ProcessStartInfo(path)
+                {
+                    WorkingDirectory = Path.GetDirectoryName(path)
+                };
+
+                Process.Start(info);
             }
 
             this.TryClose();
