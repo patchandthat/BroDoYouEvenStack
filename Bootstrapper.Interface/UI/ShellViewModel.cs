@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Interop;
 using Bootstrapper.Interface.Messages;
-using Bootstrapper.Interface.UI.Terminal;
 using Bootstrapper.Interface.Util;
 using Caliburn.Micro;
 using Microsoft.Tools.WindowsInstallerXml.Bootstrapper;
@@ -52,6 +51,7 @@ namespace Bootstrapper.Interface.UI
         public ShellViewModel(BootstrapperApplication bootStrapper, IEventAggregator agg, 
             DotaFinderViewModel finder,
             DotaDetectedViewModel detected,
+            DotaManualSelectionViewModel manual,
             BusyViewModel busy,
             ErrorViewModel error,
             InstallSuccessViewModel installSuccess,
@@ -88,6 +88,7 @@ namespace Bootstrapper.Interface.UI
             {
                 finder,
                 detected,
+                manual,
                 busy,
                 error,
                 installSuccess,
@@ -125,7 +126,7 @@ namespace Bootstrapper.Interface.UI
 
         public void Handle(DirectorySearchMessages.DotaDirectoryNotFound message)
         {
-            _agg.PublishOnBackgroundThread(new TerminationMessages.Error("Unable to locate your Dota 2 installation directory"));
+            ActiveViewModel = _screens.OfType<DotaManualSelectionViewModel>().First();
             NotifyStateChanged();
         }
 

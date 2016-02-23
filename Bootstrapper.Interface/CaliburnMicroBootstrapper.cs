@@ -58,7 +58,7 @@ namespace Bootstrapper.Interface
                 { "SizeToContent", SizeToContent.Manual },
                 { "Height" , 350  },
                 { "Width"  , 600 },
-                { "ResizeMode", ResizeMode.NoResize }
+                //{ "ResizeMode", ResizeMode.NoResize }
             };
             DisplayRootViewFor<ShellViewModel>(settings);
         }

@@ -8,15 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        <!--<materialDesign:Card HorizontalAlignment="Center" VerticalAlignment="Center">-->
-            <StackPanel VerticalAlignment="Center" >
-                <TextBlock HorizontalAlignment="Center">Searching for your Dota 2 installation directory...</TextBlock>
-                <TextBlock x:Name="CurrentSearchLocation"></TextBlock>
-                <DockPanel>
-                    <Button DockPanel.Dock="Right" Margin="8">Pick manually...</Button>
-                    <ProgressBar Height="30" IsIndeterminate="True" Margin="8"></ProgressBar>
-                </DockPanel>
-            </StackPanel>
-        <!--</materialDesign:Card>-->
+        <StackPanel VerticalAlignment="Center" >
+            <TextBlock HorizontalAlignment="Center">Searching for your Dota 2 installation directory...</TextBlock>
+            <TextBlock x:Name="CurrentSearchLocation"></TextBlock>
+            <DockPanel>
+                <ProgressBar Height="30" IsIndeterminate="True" Margin="8"></ProgressBar>
+            </DockPanel>
+        </StackPanel>
     </Grid>
 </UserControl>

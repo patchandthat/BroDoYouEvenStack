@@ -43,7 +43,7 @@ namespace Bootstrapper.Interface.Util
         public bool IsBusy { get; private set; }
 
         private readonly object _locationLock = new object();
-        private bool _doneFindingDirs = false;
+        private volatile bool _doneFindingDirs = false;
 
         public string CurrentSearchLocation
         {
@@ -256,7 +256,12 @@ namespace Bootstrapper.Interface.Util
             var culture = CultureInfo.InvariantCulture;
             string combinedSubPath = Path.Combine(DotaInstallDir, DotaConfigFolderSubPath);
 
-            while (!_doneFindingDirs)
+            while (_dirsToSearch.IsEmpty)
+            {
+                Task.Delay(100).Wait();
+            }
+
+            while (true)
             {
                 token.ThrowIfCancellationRequested();
 
@@ -273,9 +278,12 @@ namespace Bootstrapper.Interface.Util
                         return dir;
                     }
                 }
-            }
 
-            return null;
+                if (_doneFindingDirs && _dirsToSearch.IsEmpty)
+                {
+                    return null;
+                }
+            }
         }
 
         private void EnqueueDirsToSearchAsync(CancellationToken token)

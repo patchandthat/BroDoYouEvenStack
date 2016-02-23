@@ -82,29 +82,13 @@ namespace Bootstrapper.Interface.UI
             Task.Run(() =>
             {
                 //Put an artifical delay in here, as in most cases it's going to almost instantly finish and just flicker up that viewmodel
-                var t = Task.Delay(2500);
-                t.Wait(2000);
+                //var t = Task.Delay(1500);
+                //t.Wait();
 
                 _searchResult = _locator.SearchForDotaDirectory();
             });
 
             _timer.Start();
-        }
-
-        public void SpecifyManually()
-        {
-            var dialog = new FolderBrowserDialog();
-            var result = dialog.ShowDialog();
-
-            if (result == DialogResult.OK)
-            {
-                bool correctFolder = _locator.SpecifyDirectoryManually(dialog.SelectedPath);
-
-                if (!correctFolder)
-                {
-                    MessageBox.Show("That is the wrong directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
         }
     }
 }

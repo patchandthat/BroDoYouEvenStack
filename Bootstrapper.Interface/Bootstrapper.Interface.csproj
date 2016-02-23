@@ -87,34 +87,38 @@
     <Compile Include="Messages\DirectorySearchMessages.cs" />
     <Compile Include="Messages\TerminationMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\During\BusyView.xaml.cs">
+    <Compile Include="UI\BusyView.xaml.cs">
       <DependentUpon>BusyView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\During\BusyViewModel.cs" />
-    <Compile Include="UI\PreInstall\DotaDetectedView.xaml.cs">
+    <Compile Include="UI\BusyViewModel.cs" />
+    <Compile Include="UI\DotaDetectedView.xaml.cs">
       <DependentUpon>DotaDetectedView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\PreInstall\DotaDetectedViewModel.cs" />
-    <Compile Include="UI\PreInstall\DotaFinderView.xaml.cs">
+    <Compile Include="UI\DotaDetectedViewModel.cs" />
+    <Compile Include="UI\DotaFinderView.xaml.cs">
       <DependentUpon>DotaFinderView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\PreInstall\DotaFinderViewModel.cs" />
-    <Compile Include="UI\Terminal\ErrorView.xaml.cs">
+    <Compile Include="UI\DotaFinderViewModel.cs" />
+    <Compile Include="UI\DotaManualSelectionView.xaml.cs">
+      <DependentUpon>DotaManualSelectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DotaManualSelectionViewModel.cs" />
+    <Compile Include="UI\ErrorView.xaml.cs">
       <DependentUpon>ErrorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Terminal\ErrorViewModel.cs" />
+    <Compile Include="UI\ErrorViewModel.cs" />
     <Compile Include="UI\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\ShellViewModel.cs" />
-    <Compile Include="UI\Terminal\InstallSuccessView.xaml.cs">
+    <Compile Include="UI\InstallSuccessView.xaml.cs">
       <DependentUpon>InstallSuccessView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Terminal\InstallSuccessViewModel.cs" />
-    <Compile Include="UI\Terminal\UninstallSuccessView.xaml.cs">
+    <Compile Include="UI\InstallSuccessViewModel.cs" />
+    <Compile Include="UI\UninstallSuccessView.xaml.cs">
       <DependentUpon>UninstallSuccessView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Terminal\UninstallSuccessViewModel.cs" />
+    <Compile Include="UI\UninstallSuccessViewModel.cs" />
     <Compile Include="Util\DirectorySearchResult.cs" />
     <Compile Include="Util\DotaDirectoryLocator.cs" />
     <Compile Include="Util\SearchOutcome.cs" />
@@ -128,19 +132,23 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="UI\During\BusyView.xaml">
+    <Page Include="UI\BusyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\PreInstall\DotaDetectedView.xaml">
+    <Page Include="UI\DotaDetectedView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\PreInstall\DotaFinderView.xaml">
+    <Page Include="UI\DotaFinderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Terminal\ErrorView.xaml">
+    <Page Include="UI\DotaManualSelectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\ErrorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -152,15 +160,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Terminal\InstallSuccessView.xaml">
+    <Page Include="UI\InstallSuccessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\Terminal\UninstallSuccessView.xaml">
+    <Page Include="UI\UninstallSuccessView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

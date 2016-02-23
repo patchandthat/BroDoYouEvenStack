@@ -1,6 +1,6 @@
 ﻿using Caliburn.Micro;
 
-namespace Bootstrapper.Interface.UI.Terminal
+namespace Bootstrapper.Interface.UI
 {
     class UninstallSuccessViewModel : Screen
     {
